@@ -1,0 +1,63 @@
+{
+  "name": "browser-whisper",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Browser-native audio transcription powered by WebGPU Whisper — zero server, fully local.",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "dev": "bun --bun vite",
+    "dev:site": "bun --bun vite -c vite.demo.config.ts",
+    "build": "bun --bun vite build && tsc --emitDeclarationOnly",
+    "build:site": "bun --bun vite build -c vite.demo.config.ts",
+    "typecheck": "tsc --noEmit",
+    "preview": "bun --bun vite preview",
+    "test": "bun test",
+    "prepublishOnly": "bun run build"
+  },
+  "keywords": [
+    "whisper",
+    "speech-to-text",
+    "audio-to-text",
+    "webgpu",
+    "browser",
+    "offline",
+    "transformers.js"
+  ],
+  "sideEffects": false,
+  "author": "Tanpreet Singh Jolly",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tanpreetjolly/browser-whisper.git"
+  },
+  "homepage": "https://whisper.tanpreet.xyz",
+  "bugs": {
+    "url": "https://github.com/tanpreetjolly/browser-whisper/issues"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "@huggingface/transformers": "^3.8.1",
+    "browser-whisper": "^1.0.0",
+    "mediabunny": "^1.35.1"
+  },
+  "devDependencies": {
+    "@types/bun": "^1.3.10",
+    "typescript": "^5.9.3",
+    "vite": "^7.3.1"
+  }
+}
