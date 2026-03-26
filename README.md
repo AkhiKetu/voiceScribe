@@ -26,6 +26,3 @@ npm install
 npm run dev
 ```
 
-## 👨‍💻 Author
-
-Your Name
