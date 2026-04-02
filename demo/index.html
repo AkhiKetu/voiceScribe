@@ -27,40 +27,48 @@
 
   <style>
     :root {
-      --bg: #f5f7fb;
+      --bg: #f6f7fb;
       --card: rgba(255, 255, 255, 0.88);
       --card-solid: #ffffff;
-      --fg: #0f172a;
-      --muted: #64748b;
-      --line: #e2e8f0;
+      --fg: #111827;
+      --muted: #6b7280;
+      --line: #e5e7eb;
       --soft: #eef2ff;
       --soft-2: #f8fafc;
       --accent: #4f46e5;
       --accent-2: #7c3aed;
-      --shadow: 0 20px 60px rgba(15, 23, 42, 0.08);
-      --radius: 24px;
+      --shadow: 0 18px 50px rgba(17, 24, 39, 0.08);
+      --radius: 22px;
       --danger: #dc2626;
       --success: #16a34a;
       --warning-bg: #fff7ed;
       --warning-border: #fed7aa;
       --warning-fg: #9a3412;
+      --chip-bg: #f3f4f6;
+      --chip-fg: #374151;
+      --record-bg: #111827;
+      --record-stop-bg: #334155;
     }
 
     html[data-theme="dark"] {
       --bg: #0b1120;
-      --card: rgba(15, 23, 42, 0.8);
+      --card: rgba(15, 23, 42, 0.86);
       --card-solid: #0f172a;
       --fg: #e5e7eb;
       --muted: #94a3b8;
       --line: #243041;
       --soft: #1e293b;
       --soft-2: #111827;
-      --accent: #818cf8;
+      --accent: #8b94ff;
       --accent-2: #a855f7;
-      --shadow: 0 20px 60px rgba(0, 0, 0, 0.32);
+      --shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
       --warning-bg: #2a1f12;
       --warning-border: #5b3a12;
       --warning-fg: #fdba74;
+      --chip-bg: #182233;
+      --chip-fg: #cbd5e1;
+      --record-bg: #f8fafc;
+      --record-stop-bg: #475569;
     }
 
     * {
@@ -72,8 +80,8 @@
       font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       color: var(--fg);
       background:
-        radial-gradient(circle at top left, rgba(79, 70, 229, 0.10), transparent 28%),
-        radial-gradient(circle at top right, rgba(124, 58, 237, 0.10), transparent 25%),
+        radial-gradient(circle at top left, rgba(79, 70, 229, 0.08), transparent 28%),
+        radial-gradient(circle at top right, rgba(124, 58, 237, 0.08), transparent 25%),
         linear-gradient(180deg, var(--bg) 0%, var(--bg) 100%);
       min-height: 100vh;
       transition: background 0.2s ease, color 0.2s ease;
@@ -107,12 +115,17 @@
       width: 42px;
       height: 42px;
       border-radius: 14px;
-      display: grid;
-      place-items: center;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
       color: white;
       background: linear-gradient(135deg, var(--accent), var(--accent-2));
-      box-shadow: 0 12px 30px rgba(79, 70, 229, 0.28);
-      font-size: 18px;
+      box-shadow: 0 12px 30px rgba(79, 70, 229, 0.26);
+    }
+
+    .brand-badge svg {
+      width: 18px;
+      height: 18px;
     }
 
     .top-actions {
@@ -134,12 +147,22 @@
       border-radius: 999px;
       transition: 0.2s ease;
       cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
     }
 
     .home-link:hover,
     .theme-toggle:hover {
       color: var(--fg);
       transform: translateY(-1px);
+    }
+
+    .theme-toggle svg {
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
     }
 
     .hero {
@@ -159,6 +182,7 @@
       font-size: 13px;
       font-weight: 800;
       margin-bottom: 14px;
+      border: 1px solid rgba(79, 70, 229, 0.08);
     }
 
     h1 {
@@ -196,6 +220,16 @@
       font-size: 14px;
       font-weight: 600;
       line-height: 1.7;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .note-box svg {
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+      margin-top: 1px;
     }
 
     .controls {
@@ -262,11 +296,17 @@
       width: 38px;
       height: 38px;
       border-radius: 12px;
-      display: grid;
-      place-items: center;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
       background: var(--soft);
       flex-shrink: 0;
-      font-size: 17px;
+      color: var(--accent);
+    }
+
+    .file-icon svg {
+      width: 18px;
+      height: 18px;
     }
 
     .file-text {
@@ -302,6 +342,47 @@
       color: var(--accent);
       flex-shrink: 0;
       margin-left: 10px;
+    }
+
+    .recording-btn {
+      padding: 10px 20px;
+      font-size: 15px;
+      border-radius: 14px;
+      border: none;
+      cursor: pointer;
+      min-height: 56px;
+      font-weight: 800;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      letter-spacing: -0.01em;
+    }
+
+    .recording-btn svg {
+      width: 17px;
+      height: 17px;
+      flex-shrink: 0;
+    }
+
+    #startRecordingBtn {
+      background-color: var(--record-bg);
+      color: white;
+    }
+
+    html[data-theme="dark"] #startRecordingBtn {
+      color: #0f172a;
+    }
+
+    #stopRecordingBtn {
+      background-color: var(--record-stop-bg);
+      color: white;
+      display: none;
+    }
+
+    #stopRecordingBtn:hover,
+    #startRecordingBtn:hover {
+      opacity: 0.92;
     }
 
     select {
@@ -349,7 +430,7 @@
       color: white;
       border-color: transparent;
       background: linear-gradient(135deg, var(--accent), var(--accent-2));
-      box-shadow: 0 14px 28px rgba(79, 70, 229, 0.20);
+      box-shadow: 0 14px 28px rgba(79, 70, 229, 0.18);
     }
 
     .btn-secondary {
@@ -358,9 +439,9 @@
 
     .status-row {
       display: grid;
-      grid-template-columns: 1fr auto auto auto;
+      grid-template-columns: minmax(240px, 1fr) repeat(4, minmax(110px, auto)) auto;
       gap: 12px;
-      align-items: center;
+      align-items: stretch;
       margin-bottom: 18px;
     }
 
@@ -406,6 +487,14 @@
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+    }
+
+    .recording-controls {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      justify-content: flex-start;
+      flex-wrap: wrap;
     }
 
     .main-grid {
@@ -527,8 +616,20 @@
     }
 
     .empty-state .big {
-      font-size: 42px;
-      margin-bottom: 10px;
+      width: 52px;
+      height: 52px;
+      margin: 0 auto 12px;
+      border-radius: 16px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--soft);
+      color: var(--accent);
+    }
+
+    .empty-state .big svg {
+      width: 20px;
+      height: 20px;
     }
 
     .empty-state h4 {
@@ -578,12 +679,18 @@
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      background: var(--soft);
-      color: var(--accent);
+      background: var(--chip-bg);
+      color: var(--chip-fg);
       border-radius: 999px;
       padding: 8px 10px;
       font-size: 12px;
       font-weight: 800;
+    }
+
+    .time svg {
+      width: 14px;
+      height: 14px;
+      flex-shrink: 0;
     }
 
     .segment-index {
@@ -740,6 +847,14 @@
       .history-actions .history-btn {
         width: 100%;
       }
+
+      .recording-controls {
+        width: 100%;
+      }
+
+      .recording-btn {
+        width: 100%;
+      }
     }
   </style>
 </head>
@@ -747,12 +862,12 @@
   <div class="page">
     <div class="topbar">
       <div class="brand">
-        <div class="brand-badge">🎙</div>
+        <div class="brand-badge" id="brandBadge"></div>
         <div>VoiceScribe AI</div>
       </div>
 
       <div class="top-actions">
-        <button class="theme-toggle" id="themeToggle" type="button">🌙 Dark Mode</button>
+        <button class="theme-toggle" id="themeToggle" type="button"></button>
         <a href="/" class="home-link">← Back to Home</a>
       </div>
     </div>
@@ -767,13 +882,14 @@
 
     <section class="workspace">
       <div class="note-box">
-        💡 Best results with clear speech audio. Music-heavy files and songs may reduce transcription accuracy.
+        <span id="noteIcon"></span>
+        <span>Best results with clear speech audio. Music-heavy files and songs may reduce transcription accuracy.</span>
       </div>
 
       <div class="controls">
         <label class="file-label" id="fileLabel" for="fileInput">
           <div class="file-left">
-            <div class="file-icon">📁</div>
+            <div class="file-icon" id="fileIcon"></div>
             <div class="file-text">
               <div class="file-title" id="fileName">Choose file or drop here</div>
               <div class="file-sub" id="fileSub">Audio or video supported</div>
@@ -788,8 +904,6 @@
           <option value="en">English</option>
           <option value="bn">Bangla</option>
           <option value="hi">Hindi</option>
-          <option value="ur">Urdu</option>
-          <option value="ar">Arabic</option>
         </select>
 
         <select id="modelSelect" title="Select model">
@@ -835,6 +949,11 @@
           <div class="mini-label">Duration</div>
           <div class="mini-value" id="summaryDuration">0:00</div>
         </div>
+
+        <div class="recording-controls">
+          <button id="startRecordingBtn" class="recording-btn" type="button"></button>
+          <button id="stopRecordingBtn" class="recording-btn" type="button"></button>
+        </div>
       </div>
 
       <div class="main-grid">
@@ -859,7 +978,7 @@
               <div class="transcript-box" id="transcriptBox">
                 <div class="empty-state">
                   <div>
-                    <div class="big">✨</div>
+                    <div class="big" id="readyStateIcon"></div>
                     <h4>Ready to transcribe</h4>
                     <p>Select a file and click <strong>Transcribe</strong>.</p>
                   </div>
@@ -885,6 +1004,86 @@
 
     <div class="footer">VoiceScribe AI • Browser-Based Speech to Text</div>
   </div>
+
+  <script>
+    const ICONS = {
+      mic: `
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="9" y="3" width="6" height="11" rx="3"></rect>
+          <path d="M5 10a7 7 0 0 0 14 0"></path>
+          <path d="M12 17v4"></path>
+          <path d="M8 21h8"></path>
+        </svg>
+      `,
+      folder: `
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z"></path>
+        </svg>
+      `,
+      moon: `
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8z"></path>
+        </svg>
+      `,
+      sun: `
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="4"></circle>
+          <path d="M12 2v2"></path>
+          <path d="M12 20v2"></path>
+          <path d="m4.93 4.93 1.41 1.41"></path>
+          <path d="m17.66 17.66 1.41 1.41"></path>
+          <path d="M2 12h2"></path>
+          <path d="M20 12h2"></path>
+          <path d="m6.34 17.66-1.41 1.41"></path>
+          <path d="m19.07 4.93-1.41 1.41"></path>
+        </svg>
+      `,
+      stop: `
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <rect x="6" y="6" width="12" height="12" rx="2"></rect>
+        </svg>
+      `,
+      clock: `
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="9"></circle>
+          <path d="M12 7v5l3 2"></path>
+        </svg>
+      `,
+      file: `
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M14 2H7a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7z"></path>
+          <path d="M14 2v5h5"></path>
+        </svg>
+      `,
+      alert: `
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M12 9v4"></path>
+          <path d="M12 17h.01"></path>
+          <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+        </svg>
+      `,
+      error: `
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="9"></circle>
+          <path d="m15 9-6 6"></path>
+          <path d="m9 9 6 6"></path>
+        </svg>
+      `,
+      loader: `
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M21 12a9 9 0 1 1-9-9"></path>
+        </svg>
+      `,
+      transcript: `
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M8 6h8"></path>
+          <path d="M8 10h8"></path>
+          <path d="M8 14h5"></path>
+          <path d="M6 3h12a2 2 0 0 1 2 2v14l-4-3H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"></path>
+        </svg>
+      `
+    };
+  </script>
 
   <script type="module">
     import { BrowserWhisper } from "/src/index.ts";
@@ -918,11 +1117,27 @@
     const historyList = $("historyList");
     const clearHistoryBtn = $("clearHistoryBtn");
 
+    const startRecordingBtn = $("startRecordingBtn");
+    const stopRecordingBtn = $("stopRecordingBtn");
+
+    const brandBadge = $("brandBadge");
+    const fileIcon = $("fileIcon");
+    const noteIcon = $("noteIcon");
+    const readyStateIcon = $("readyStateIcon");
+
     let selectedFile = null;
+    let selectedSource = "upload";
     let mediaEl = null;
     let segmentRefs = [];
     let rawSegments = [];
     let transcriptText = "";
+
+    let mediaRecorder = null;
+    let recordingStream = null;
+    let recordedChunks = [];
+    let recordingStartTime = 0;
+    let recordingTimer = null;
+    let mediaObjectUrl = null;
 
     const HISTORY_KEY = "voicescribe_history_v1";
     const THEME_KEY = "voicescribe_theme_v1";
@@ -955,6 +1170,24 @@
       statusLog.textContent = text;
     };
 
+    const escapeHtml = (value) =>
+      String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#39;");
+
+    const injectStaticIcons = () => {
+      brandBadge.innerHTML = ICONS.mic;
+      fileIcon.innerHTML = ICONS.folder;
+      noteIcon.innerHTML = ICONS.alert;
+      readyStateIcon.innerHTML = ICONS.file;
+
+      startRecordingBtn.innerHTML = `${ICONS.mic}<span>Start Recording</span>`;
+      stopRecordingBtn.innerHTML = `${ICONS.stop}<span>Stop Recording</span>`;
+    };
+
     const resetOutput = () => {
       rawSegments = [];
       segmentRefs = [];
@@ -962,7 +1195,7 @@
       transcriptBox.innerHTML = `
         <div class="empty-state">
           <div>
-            <div class="big">✨</div>
+            <div class="big">${ICONS.file}</div>
             <h4>Ready to transcribe</h4>
             <p>Select a file and click <strong>Transcribe</strong>.</p>
           </div>
@@ -973,35 +1206,13 @@
       summaryDuration.textContent = "0:00";
     };
 
-    const clearAll = () => {
-      selectedFile = null;
-      fileInput.value = "";
-      fileName.textContent = "Choose file or drop here";
-      fileName.title = "";
-      fileSub.textContent = "Audio or video supported";
-      fileSub.title = "";
-      fileLabel.classList.remove("has-file");
-      transcribeBtn.disabled = true;
-      resetOutput();
-      setStatus("Ready — select an audio or video file to begin.");
-      summaryLanguage.textContent = getLanguageLabel().replace("Auto Detect Language", "Auto");
-      summaryModel.textContent = getModelLabel();
-
-      if (mediaEl) {
-        mediaEl.pause();
-        mediaEl.removeAttribute("src");
-        mediaEl.load?.();
-      }
-
-      mediaWrap.innerHTML = "";
-      mediaWrap.classList.remove("visible");
-      mediaEl = null;
-    };
-
     const applyTheme = (theme) => {
       document.documentElement.setAttribute("data-theme", theme);
       localStorage.setItem(THEME_KEY, theme);
-      themeToggle.textContent = theme === "dark" ? "☀️ Light Mode" : "🌙 Dark Mode";
+      themeToggle.innerHTML =
+        theme === "dark"
+          ? `${ICONS.sun}<span>Light Mode</span>`
+          : `${ICONS.moon}<span>Dark Mode</span>`;
     };
 
     const loadTheme = () => {
@@ -1027,6 +1238,7 @@
       const history = getHistory();
       history.unshift({
         id: Date.now(),
+        source: selectedSource,
         fileName: selectedFile.name,
         shortFileName: shortenFileName(selectedFile.name, 36),
         model: getModelLabel(),
@@ -1061,7 +1273,7 @@
               <div class="history-item-title" title="${escapeHtml(item.fileName)}">${escapeHtml(item.shortFileName || item.fileName)}</div>
               <div class="history-item-meta">
                 ${escapeHtml(item.createdAt)}<br>
-                ${escapeHtml(item.language)} • ${escapeHtml(item.model)} • ${escapeHtml(item.duration)} • ${escapeHtml(item.segments)} segments
+                ${escapeHtml(item.source === "recording" ? "Recording" : "Upload")} • ${escapeHtml(item.language)} • ${escapeHtml(item.model)} • ${escapeHtml(item.duration)} • ${escapeHtml(item.segments)} segments
               </div>
               <div class="history-item-preview">${escapeHtml(item.preview)}</div>
               <div class="history-actions">
@@ -1096,7 +1308,7 @@
           transcriptBox.innerHTML = `
             <div class="segment">
               <div class="segment-head">
-                <span class="time">📝 Saved Transcript</span>
+                <span class="time">${ICONS.transcript}<span>Saved Transcript</span></span>
                 <span class="segment-index">${escapeHtml(item.createdAt)}</span>
               </div>
               <div class="segment-text" style="white-space: pre-wrap;">${escapeHtml(item.transcript)}</div>
@@ -1125,16 +1337,121 @@
       });
     };
 
-    const escapeHtml = (value) =>
-      String(value)
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#39;");
+    const getPreferredRecordingMimeType = () => {
+      const candidates = [
+        "audio/webm;codecs=opus",
+        "audio/webm",
+        "audio/ogg;codecs=opus",
+        "audio/mp4"
+      ];
 
-    const updateSelectedFileUI = (file) => {
+      for (const type of candidates) {
+        if (window.MediaRecorder && MediaRecorder.isTypeSupported(type)) {
+          return type;
+        }
+      }
+
+      return "";
+    };
+
+    const stopRecordingTracks = () => {
+      if (recordingStream) {
+        recordingStream.getTracks().forEach((track) => track.stop());
+        recordingStream = null;
+      }
+    };
+
+    const startRecordingTimer = () => {
+      recordingStartTime = Date.now();
+      summaryDuration.textContent = "0:00";
+
+      recordingTimer = setInterval(() => {
+        const elapsed = (Date.now() - recordingStartTime) / 1000;
+        summaryDuration.textContent = formatTime(elapsed);
+        setStatus(`Recording... ${formatTime(elapsed)}`);
+      }, 250);
+    };
+
+    const stopRecordingTimer = () => {
+      if (recordingTimer) {
+        clearInterval(recordingTimer);
+        recordingTimer = null;
+      }
+    };
+
+    const setRecordingUI = (isRecording) => {
+      startRecordingBtn.style.display = isRecording ? "none" : "inline-flex";
+      stopRecordingBtn.style.display = isRecording ? "inline-flex" : "none";
+
+      fileInput.disabled = isRecording;
+      fileLabel.style.pointerEvents = isRecording ? "none" : "auto";
+      modelSelect.disabled = isRecording;
+      languageSelect.disabled = isRecording;
+      clearBtn.disabled = isRecording;
+      transcribeBtn.disabled = isRecording || !selectedFile;
+    };
+
+    const syncModelLanguageRules = () => {
+      const model = modelSelect.value;
+      const isEnglishOnly =
+        model.startsWith("moonshine") || model.startsWith("distil-whisper");
+
+      if (isEnglishOnly && languageSelect.value === "auto") {
+        languageSelect.value = "en";
+        setStatus("Selected model is English-only. Language set to English.");
+      }
+
+      summaryLanguage.textContent = getLanguageLabel().replace("Auto Detect Language", "Auto");
+      summaryModel.textContent = getModelLabel();
+    };
+
+    const clearMediaPreview = () => {
+      if (mediaEl) {
+        mediaEl.pause();
+        mediaEl.removeAttribute("src");
+        mediaEl.load?.();
+        mediaEl = null;
+      }
+
+      if (mediaObjectUrl) {
+        URL.revokeObjectURL(mediaObjectUrl);
+        mediaObjectUrl = null;
+      }
+
+      mediaWrap.innerHTML = "";
+      mediaWrap.classList.remove("visible");
+    };
+
+    const clearAll = () => {
+      if (mediaRecorder && mediaRecorder.state !== "inactive") {
+        mediaRecorder.stop();
+      }
+
+      stopRecordingTimer();
+      stopRecordingTracks();
+      setRecordingUI(false);
+
+      selectedFile = null;
+      selectedSource = "upload";
+      fileInput.value = "";
+      fileName.textContent = "Choose file or drop here";
+      fileName.title = "";
+      fileSub.textContent = "Audio or video supported";
+      fileSub.title = "";
+      fileLabel.classList.remove("has-file");
+      transcribeBtn.disabled = true;
+
+      resetOutput();
+      clearMediaPreview();
+
+      setStatus("Ready — select an audio or video file to begin.");
+      summaryLanguage.textContent = getLanguageLabel().replace("Auto Detect Language", "Auto");
+      summaryModel.textContent = getModelLabel();
+    };
+
+    const updateSelectedFileUI = (file, source = "upload") => {
       selectedFile = file;
+      selectedSource = source;
 
       if (!selectedFile) {
         clearAll();
@@ -1152,7 +1469,12 @@
       transcribeBtn.disabled = false;
       summaryLanguage.textContent = getLanguageLabel().replace("Auto Detect Language", "Auto");
       summaryModel.textContent = getModelLabel();
-      setStatus("File selected — ready to transcribe.");
+
+      setStatus(
+        source === "recording"
+          ? "Recording ready — click Transcribe."
+          : "File selected — ready to transcribe."
+      );
     };
 
     const setDragState = (isDragOver) => {
@@ -1166,6 +1488,7 @@
       }
     };
 
+    injectStaticIcons();
     loadTheme();
     renderHistory();
     summaryModel.textContent = getModelLabel();
@@ -1177,7 +1500,7 @@
     });
 
     modelSelect.addEventListener("change", () => {
-      summaryModel.textContent = getModelLabel();
+      syncModelLanguageRules();
     });
 
     languageSelect.addEventListener("change", () => {
@@ -1186,13 +1509,14 @@
 
     fileInput.addEventListener("change", () => {
       const file = fileInput.files?.[0] || null;
-      updateSelectedFileUI(file);
+      updateSelectedFileUI(file, "upload");
     });
 
     ["dragenter", "dragover"].forEach((eventName) => {
       fileLabel.addEventListener(eventName, (event) => {
         event.preventDefault();
         event.stopPropagation();
+        if (fileInput.disabled) return;
         setDragState(true);
       });
     });
@@ -1210,13 +1534,15 @@
       event.stopPropagation();
       setDragState(false);
 
+      if (fileInput.disabled) return;
+
       const file = event.dataTransfer?.files?.[0] || null;
       if (!file) return;
 
       const dt = new DataTransfer();
       dt.items.add(file);
       fileInput.files = dt.files;
-      updateSelectedFileUI(file);
+      updateSelectedFileUI(file, "upload");
     });
 
     document.querySelectorAll(".tab-btn").forEach((btn) => {
@@ -1230,6 +1556,104 @@
       });
     });
 
+    startRecordingBtn.addEventListener("click", async () => {
+      try {
+        if (!navigator.mediaDevices?.getUserMedia) {
+          throw new Error("Audio recording is not supported in this browser.");
+        }
+
+        resetOutput();
+        clearMediaPreview();
+        setStatus("Requesting microphone access...");
+
+        const model = modelSelect.value;
+        const isEnglishOnly =
+          model.startsWith("moonshine") || model.startsWith("distil-whisper");
+
+        if (isEnglishOnly && languageSelect.value === "auto") {
+          languageSelect.value = "en";
+          summaryLanguage.textContent = "English";
+        } else {
+          languageSelect.value = "auto";
+          summaryLanguage.textContent = "Auto";
+        }
+
+        recordingStream = await navigator.mediaDevices.getUserMedia({
+          audio: {
+            echoCancellation: true,
+            noiseSuppression: true,
+            autoGainControl: true
+          }
+        });
+
+        recordedChunks = [];
+
+        const mimeType = getPreferredRecordingMimeType();
+        mediaRecorder = mimeType
+          ? new MediaRecorder(recordingStream, { mimeType })
+          : new MediaRecorder(recordingStream);
+
+        mediaRecorder.addEventListener("dataavailable", (event) => {
+          if (event.data && event.data.size > 0) {
+            recordedChunks.push(event.data);
+          }
+        });
+
+        mediaRecorder.addEventListener("start", () => {
+          setRecordingUI(true);
+          startRecordingTimer();
+          setStatus("Recording started...");
+        });
+
+        mediaRecorder.addEventListener("stop", () => {
+          stopRecordingTimer();
+          stopRecordingTracks();
+          setRecordingUI(false);
+
+          if (!recordedChunks.length) {
+            setStatus("No audio was recorded.");
+            summaryDuration.textContent = "0:00";
+            return;
+          }
+
+          const finalMimeType = mediaRecorder.mimeType || "audio/webm";
+          const extension = finalMimeType.includes("ogg")
+            ? "ogg"
+            : finalMimeType.includes("mp4")
+            ? "mp4"
+            : "webm";
+
+          const blob = new Blob(recordedChunks, { type: finalMimeType });
+          const recordedFile = new File(
+            [blob],
+            `recording-${new Date().toISOString().replace(/[:.]/g, "-")}.${extension}`,
+            { type: finalMimeType }
+          );
+
+          const dt = new DataTransfer();
+          dt.items.add(recordedFile);
+          fileInput.files = dt.files;
+
+          updateSelectedFileUI(recordedFile, "recording");
+          setStatus("Recording complete. Ready to transcribe.");
+        });
+
+        mediaRecorder.start(250);
+      } catch (err) {
+        stopRecordingTimer();
+        stopRecordingTracks();
+        setRecordingUI(false);
+        setStatus(`Recording error: ${err?.message || "Unable to start recording."}`);
+      }
+    });
+
+    stopRecordingBtn.addEventListener("click", () => {
+      if (mediaRecorder && mediaRecorder.state !== "inactive") {
+        setStatus("Stopping recording...");
+        mediaRecorder.stop();
+      }
+    });
+
     transcribeBtn.addEventListener("click", async () => {
       if (!selectedFile) return;
 
@@ -1237,12 +1661,12 @@
       resetOutput();
 
       if (mediaEl) mediaEl.pause();
+      clearMediaPreview();
 
-      mediaWrap.innerHTML = "";
-      const fileUrl = URL.createObjectURL(selectedFile);
+      mediaObjectUrl = URL.createObjectURL(selectedFile);
       mediaEl = document.createElement(selectedFile.type.startsWith("video/") ? "video" : "audio");
       mediaEl.controls = true;
-      mediaEl.src = fileUrl;
+      mediaEl.src = mediaObjectUrl;
       mediaWrap.appendChild(mediaEl);
       mediaWrap.classList.add("visible");
 
@@ -1260,7 +1684,7 @@
       transcriptBox.innerHTML = `
         <div class="empty-state">
           <div>
-            <div class="big">⏳</div>
+            <div class="big">${ICONS.loader}</div>
             <h4>Processing...</h4>
             <p>Please wait while the model transcribes your file.</p>
           </div>
@@ -1312,7 +1736,7 @@
           seg.className = "segment";
           seg.innerHTML = `
             <div class="segment-head">
-              <span class="time">⏱ ${formatTime(start)} - ${formatTime(end)}</span>
+              <span class="time">${ICONS.clock}<span>${formatTime(start)} - ${formatTime(end)}</span></span>
               <span class="segment-index">Segment ${index}</span>
             </div>
             <div class="segment-text"></div>
@@ -1337,7 +1761,7 @@
           transcriptBox.innerHTML = `
             <div class="empty-state">
               <div>
-                <div class="big">⚠️</div>
+                <div class="big">${ICONS.alert}</div>
                 <h4>No speech detected</h4>
                 <p>No transcript segments were produced.</p>
               </div>
@@ -1355,7 +1779,7 @@
         transcriptBox.innerHTML = `
           <div class="empty-state">
             <div>
-              <div class="big">❌</div>
+              <div class="big">${ICONS.error}</div>
               <h4>Transcription failed</h4>
               <p>${err?.message || "An unknown error occurred."}</p>
             </div>
