@@ -1,9 +1,6 @@
 {
   "compilerOptions": {
     "target": "ES2022",
-    "types": [
-      "@types/bun"
-    ],
     "lib": [
       "ES2022",
       "DOM",
@@ -11,11 +8,7 @@
     ],
     "module": "ESNext",
     "moduleResolution": "bundler",
-    "declaration": true,
-    "declarationMap": true,
     "sourceMap": true,
-    "outDir": "./dist",
-    "emitDeclarationOnly": true,
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,

@@ -1,14 +1,10 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>VoiceScribe AI | Transcribe</title>
-  <meta
-    name="description"
-    content="VoiceScribe AI transcribes audio and video into text directly in the browser."
-  />
-  <meta name="author" content="Your Name" />
+  <title>VoiceScribe AI</title>
+  <meta name="description" content="Clean speech-to-text interface with file transcription, recording, history, and instant live speech recognition." />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -27,48 +23,20 @@
 
   <style>
     :root {
-      --bg: #f6f7fb;
-      --card: rgba(255, 255, 255, 0.88);
-      --card-solid: #ffffff;
-      --fg: #111827;
-      --muted: #6b7280;
-      --line: #e5e7eb;
-      --soft: #eef2ff;
-      --soft-2: #f8fafc;
-      --accent: #4f46e5;
-      --accent-2: #7c3aed;
-      --shadow: 0 18px 50px rgba(17, 24, 39, 0.08);
-      --radius: 22px;
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --text: #0f172a;
+      --muted: #64748b;
+      --line: #e2e8f0;
+      --soft: #f1f5f9;
+      --soft-2: #eef2ff;
+      --primary: #4f46e5;
+      --primary-2: #7c3aed;
+      --success: #0f766e;
       --danger: #dc2626;
-      --success: #16a34a;
-      --warning-bg: #fff7ed;
-      --warning-border: #fed7aa;
-      --warning-fg: #9a3412;
-      --chip-bg: #f3f4f6;
-      --chip-fg: #374151;
-      --record-bg: #111827;
-      --record-stop-bg: #334155;
-    }
-
-    html[data-theme="dark"] {
-      --bg: #0b1120;
-      --card: rgba(15, 23, 42, 0.86);
-      --card-solid: #0f172a;
-      --fg: #e5e7eb;
-      --muted: #94a3b8;
-      --line: #243041;
-      --soft: #1e293b;
-      --soft-2: #111827;
-      --accent: #8b94ff;
-      --accent-2: #a855f7;
-      --shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-      --warning-bg: #2a1f12;
-      --warning-border: #5b3a12;
-      --warning-fg: #fdba74;
-      --chip-bg: #182233;
-      --chip-fg: #cbd5e1;
-      --record-bg: #f8fafc;
-      --record-stop-bg: #475569;
+      --dark: #0f172a;
+      --shadow: 0 20px 50px rgba(15, 23, 42, 0.08);
+      --radius: 20px;
     }
 
     * {
@@ -77,247 +45,151 @@
 
     body {
       margin: 0;
-      font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      color: var(--fg);
+      font-family: "Inter", system-ui, sans-serif;
+      color: var(--text);
       background:
-        radial-gradient(circle at top left, rgba(79, 70, 229, 0.08), transparent 28%),
-        radial-gradient(circle at top right, rgba(124, 58, 237, 0.08), transparent 25%),
-        linear-gradient(180deg, var(--bg) 0%, var(--bg) 100%);
+        radial-gradient(circle at top left, rgba(79, 70, 229, 0.08), transparent 30%),
+        linear-gradient(180deg, #f8fafc 0%, #eef2ff 100%);
       min-height: 100vh;
-      transition: background 0.2s ease, color 0.2s ease;
     }
 
     .page {
-      max-width: 1180px;
+      max-width: 1080px;
       margin: 0 auto;
-      padding: 28px 18px 40px;
+      padding: 32px 16px 48px;
     }
 
-    .topbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 18px;
-      flex-wrap: wrap;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-weight: 800;
-      font-size: 20px;
-      letter-spacing: -0.02em;
-    }
-
-    .brand-badge {
-      width: 42px;
-      height: 42px;
-      border-radius: 14px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      background: linear-gradient(135deg, var(--accent), var(--accent-2));
-      box-shadow: 0 12px 30px rgba(79, 70, 229, 0.26);
-    }
-
-    .brand-badge svg {
-      width: 18px;
-      height: 18px;
-    }
-
-    .top-actions {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    .home-link,
-    .theme-toggle {
-      text-decoration: none;
-      color: var(--muted);
-      font-weight: 700;
-      font-size: 14px;
-      border: 1px solid var(--line);
-      background: var(--card-solid);
-      padding: 10px 14px;
-      border-radius: 999px;
-      transition: 0.2s ease;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-    }
-
-    .home-link:hover,
-    .theme-toggle:hover {
-      color: var(--fg);
-      transform: translateY(-1px);
-    }
-
-    .theme-toggle svg {
-      width: 16px;
-      height: 16px;
-      flex-shrink: 0;
-    }
-
-    .hero {
+    .header {
       text-align: center;
       margin-bottom: 24px;
-      padding: 26px 16px 6px;
     }
 
-    .hero-badge {
+    .badge {
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      background: var(--soft);
-      color: var(--accent);
+      background: #eef2ff;
+      color: var(--primary);
       padding: 10px 14px;
       border-radius: 999px;
       font-size: 13px;
       font-weight: 800;
       margin-bottom: 14px;
-      border: 1px solid rgba(79, 70, 229, 0.08);
     }
 
     h1 {
-      margin: 0;
-      font-size: clamp(34px, 5vw, 58px);
-      letter-spacing: -0.04em;
+      margin: 0 0 10px;
+      font-size: clamp(30px, 6vw, 50px);
       line-height: 1;
+      letter-spacing: -0.04em;
     }
 
-    .hero-subtitle {
-      margin: 14px auto 0;
-      max-width: 680px;
+    .subtitle {
+      margin: 0 auto;
+      max-width: 760px;
       color: var(--muted);
-      font-size: 16px;
-      line-height: 1.75;
+      font-size: 15px;
+      line-height: 1.8;
       font-weight: 500;
     }
 
-    .workspace {
+    .card {
       background: var(--card);
       border: 1px solid var(--line);
       border-radius: var(--radius);
       box-shadow: var(--shadow);
-      padding: 24px;
-      backdrop-filter: blur(16px);
+      padding: 18px;
     }
 
-    .note-box {
-      margin-bottom: 16px;
-      border: 1px solid var(--warning-border);
-      background: var(--warning-bg);
-      color: var(--warning-fg);
-      border-radius: 18px;
-      padding: 14px 16px;
-      font-size: 14px;
-      font-weight: 600;
-      line-height: 1.7;
-      display: flex;
-      align-items: flex-start;
-      gap: 10px;
+    .section-gap {
+      margin-top: 18px;
     }
 
-    .note-box svg {
-      width: 18px;
-      height: 18px;
-      flex-shrink: 0;
-      margin-top: 1px;
-    }
-
-    .controls {
+    .mode-switch {
       display: grid;
-      grid-template-columns: 1.2fr 0.9fr 0.8fr auto auto;
-      gap: 12px;
-      align-items: stretch;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
       margin-bottom: 16px;
+    }
+
+    .mode-btn {
+      min-height: 52px;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: var(--soft);
+      color: var(--muted);
+      font: inherit;
+      font-weight: 800;
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+
+    .mode-btn.active {
+      background: linear-gradient(135deg, var(--primary), var(--primary-2));
+      color: #fff;
+      border-color: transparent;
+    }
+
+    .panel {
+      display: none;
+    }
+
+    .panel.active {
+      display: block;
+    }
+
+    .grid {
+      display: grid;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .grid.two {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .grid.three {
+      grid-template-columns: 1fr 1fr 1fr;
+    }
+
+    .field,
+    .btn,
+    .file-trigger {
+      min-height: 54px;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      font: inherit;
+    }
+
+    .field {
+      width: 100%;
+      background: #fff;
+      padding: 0 14px;
+      color: var(--text);
+      outline: none;
+    }
+
+    .field:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.08);
     }
 
     input[type="file"] {
       display: none;
     }
 
-    .file-label,
-    select,
-    button {
-      min-height: 56px;
-      border-radius: 16px;
-      font: inherit;
-      border: 1px solid var(--line);
-      transition: 0.2s ease;
-    }
-
-    .file-label {
+    .file-trigger {
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 14px;
-      padding: 0 16px;
+      padding: 0 14px;
+      background: #fff;
       cursor: pointer;
-      background: var(--card-solid);
-      overflow: hidden;
-      position: relative;
     }
 
-    .file-label:hover {
-      border-color: #c7d2fe;
-      background: var(--card-solid);
-    }
-
-    .file-label.has-file {
-      border-color: var(--accent);
-      background: color-mix(in srgb, var(--soft) 45%, var(--card-solid));
-    }
-
-    .file-label.dragover {
-      border-color: var(--accent);
-      border-style: dashed;
-      background: color-mix(in srgb, var(--soft) 60%, var(--card-solid));
-      box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.08);
-    }
-
-    .file-left {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      min-width: 0;
-      flex: 1;
-      overflow: hidden;
-    }
-
-    .file-icon {
-      width: 38px;
-      height: 38px;
-      border-radius: 12px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      background: var(--soft);
-      flex-shrink: 0;
-      color: var(--accent);
-    }
-
-    .file-icon svg {
-      width: 18px;
-      height: 18px;
-    }
-
-    .file-text {
-      min-width: 0;
-      flex: 1;
-      overflow: hidden;
-    }
-
-    .file-title {
-      display: block;
-      width: 100%;
+    .file-name {
+      color: var(--text);
       font-size: 14px;
       font-weight: 700;
       white-space: nowrap;
@@ -325,346 +197,167 @@
       text-overflow: ellipsis;
     }
 
-    .file-sub {
-      display: block;
-      width: 100%;
-      font-size: 12px;
+    .file-hint {
       color: var(--muted);
-      margin-top: 2px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .file-action {
       font-size: 12px;
-      font-weight: 800;
-      color: var(--accent);
-      flex-shrink: 0;
-      margin-left: 10px;
-    }
-
-    .recording-btn {
-      padding: 10px 20px;
-      font-size: 15px;
-      border-radius: 14px;
-      border: none;
-      cursor: pointer;
-      min-height: 56px;
-      font-weight: 800;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      letter-spacing: -0.01em;
-    }
-
-    .recording-btn svg {
-      width: 17px;
-      height: 17px;
+      font-weight: 700;
       flex-shrink: 0;
     }
 
-    #startRecordingBtn {
-      background-color: var(--record-bg);
-      color: white;
+    .actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
     }
 
-    html[data-theme="dark"] #startRecordingBtn {
-      color: #0f172a;
-    }
-
-    #stopRecordingBtn {
-      background-color: var(--record-stop-bg);
-      color: white;
-      display: none;
-    }
-
-    #stopRecordingBtn:hover,
-    #startRecordingBtn:hover {
-      opacity: 0.92;
-    }
-
-    select {
-      appearance: none;
-      background:
-        linear-gradient(180deg, var(--card-solid), var(--card-solid)),
-        var(--card-solid);
-      color: var(--fg);
-      padding: 0 44px 0 14px;
-      outline: none;
-      background-image:
-        linear-gradient(45deg, transparent 50%, var(--muted) 50%),
-        linear-gradient(135deg, var(--muted) 50%, transparent 50%);
-      background-position:
-        calc(100% - 20px) calc(50% - 3px),
-        calc(100% - 14px) calc(50% - 3px);
-      background-size: 6px 6px, 6px 6px;
-      background-repeat: no-repeat;
-    }
-
-    select:focus {
-      border-color: var(--accent);
-      box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.08);
-    }
-
-    button {
+    .btn {
       padding: 0 18px;
+      background: #fff;
+      color: var(--text);
       font-weight: 800;
       cursor: pointer;
-      background: var(--card-solid);
-      color: var(--fg);
+      transition: 0.2s ease;
     }
 
-    button:hover:not(:disabled) {
+    .btn:hover:not(:disabled) {
       transform: translateY(-1px);
     }
 
-    button:disabled {
+    .btn:disabled {
       opacity: 0.55;
       cursor: not-allowed;
-      transform: none !important;
+      transform: none;
     }
 
-    .btn-primary {
-      color: white;
+    .btn.primary {
+      background: linear-gradient(135deg, var(--primary), var(--primary-2));
+      color: #fff;
       border-color: transparent;
-      background: linear-gradient(135deg, var(--accent), var(--accent-2));
-      box-shadow: 0 14px 28px rgba(79, 70, 229, 0.18);
     }
 
-    .btn-secondary {
-      background: var(--card-solid);
+    .btn.live {
+      background: var(--success);
+      color: #fff;
+      border-color: transparent;
     }
 
-    .status-row {
-      display: grid;
-      grid-template-columns: minmax(240px, 1fr) repeat(4, minmax(110px, auto)) auto;
-      gap: 12px;
-      align-items: stretch;
-      margin-bottom: 18px;
+    .btn.stop {
+      background: var(--danger);
+      color: #fff;
+      border-color: transparent;
     }
 
-    .status-box,
-    .mini-card {
-      min-height: 56px;
-      border-radius: 16px;
+    .btn.dark {
+      background: var(--dark);
+      color: #fff;
+      border-color: transparent;
+    }
+
+    .status {
+      min-height: 50px;
       border: 1px solid var(--line);
-      background: var(--card-solid);
+      border-radius: 14px;
+      background: var(--soft);
       display: flex;
       align-items: center;
-    }
-
-    .status-box {
-      padding: 0 16px;
+      padding: 12px 14px;
       color: var(--muted);
       font-size: 14px;
       font-weight: 600;
-      overflow: hidden;
+      margin-bottom: 14px;
     }
 
-    .mini-card {
-      padding: 0 14px;
-      justify-content: center;
-      flex-direction: column;
-      min-width: 115px;
+    .meta {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-bottom: 14px;
     }
 
-    .mini-label {
+    .meta-box {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: #fff;
+      padding: 12px;
+    }
+
+    .meta-label {
       font-size: 11px;
+      color: var(--muted);
+      font-weight: 800;
       text-transform: uppercase;
       letter-spacing: 0.08em;
-      color: #94a3b8;
-      font-weight: 800;
-      margin-bottom: 4px;
+      margin-bottom: 6px;
     }
 
-    .mini-value {
+    .meta-value {
       font-size: 14px;
       font-weight: 800;
-      color: var(--fg);
-      max-width: 100%;
+      color: var(--text);
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
 
-    .recording-controls {
-      display: flex;
-      gap: 12px;
-      align-items: center;
-      justify-content: flex-start;
-      flex-wrap: wrap;
-    }
-
-    .main-grid {
-      display: grid;
-      grid-template-columns: 1fr 320px;
-      gap: 18px;
-      align-items: start;
-    }
-
     .media-wrap {
-      border: 1px solid var(--line);
-      border-radius: 22px;
-      overflow: hidden;
-      background: color-mix(in srgb, var(--soft-2) 70%, var(--card-solid));
       display: none;
-      margin-bottom: 18px;
+      margin-bottom: 14px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      overflow: hidden;
+      background: #fff;
     }
 
     .media-wrap.visible {
       display: block;
     }
 
-    video,
-    audio {
+    .media-wrap video,
+    .media-wrap audio {
       width: 100%;
       display: block;
-      max-height: 380px;
+      max-height: 360px;
       background: #0f172a;
     }
 
-    .result-panel,
-    .history-panel {
+    .output {
       border: 1px solid var(--line);
-      border-radius: 22px;
-      overflow: hidden;
-      background: var(--card-solid);
-    }
-
-    .tabs {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      padding: 12px;
-      background: color-mix(in srgb, var(--soft-2) 65%, var(--card-solid));
-      border-bottom: 1px solid var(--line);
-      flex-wrap: wrap;
-    }
-
-    .tab-buttons,
-    .tab-tools {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-
-    .tab-btn,
-    .tool-btn,
-    .history-btn {
-      min-height: auto;
-      width: auto;
-      padding: 10px 14px;
-      border-radius: 12px;
-      font-size: 13px;
-      font-weight: 800;
-      background: var(--card-solid);
-    }
-
-    .tab-btn,
-    .history-btn {
-      color: var(--muted);
-      border: 1px solid transparent;
-    }
-
-    .tab-btn.active {
-      color: var(--fg);
-      border-color: var(--line);
-      box-shadow: 0 6px 20px rgba(15, 23, 42, 0.05);
-    }
-
-    .tab-panel {
-      display: none;
-    }
-
-    .tab-panel.active {
-      display: block;
-    }
-
-    .transcript-box,
-    .json-box {
-      min-height: 400px;
-      max-height: 560px;
-      overflow: auto;
-      padding: 18px;
-    }
-
-    .transcript-box::-webkit-scrollbar,
-    .json-box::-webkit-scrollbar,
-    .history-list::-webkit-scrollbar {
-      width: 8px;
-    }
-
-    .transcript-box::-webkit-scrollbar-thumb,
-    .json-box::-webkit-scrollbar-thumb,
-    .history-list::-webkit-scrollbar-thumb {
-      background: #cbd5e1;
-      border-radius: 999px;
-    }
-
-    .empty-state {
-      min-height: 360px;
-      border: 1px dashed var(--line);
-      border-radius: 18px;
-      display: grid;
-      place-items: center;
-      text-align: center;
-      padding: 28px;
-      background: linear-gradient(180deg, var(--card-solid), color-mix(in srgb, var(--soft-2) 80%, var(--card-solid)));
-    }
-
-    .empty-state .big {
-      width: 52px;
-      height: 52px;
-      margin: 0 auto 12px;
       border-radius: 16px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      background: var(--soft);
-      color: var(--accent);
+      background: #fff;
+      min-height: 320px;
+      max-height: 520px;
+      overflow: auto;
+      padding: 16px;
+      white-space: pre-wrap;
+      line-height: 1.8;
+      font-size: 15px;
     }
 
-    .empty-state .big svg {
-      width: 20px;
-      height: 20px;
-    }
-
-    .empty-state h4 {
-      margin: 0 0 8px;
-      font-size: 20px;
-      letter-spacing: -0.02em;
-    }
-
-    .empty-state p {
-      margin: 0;
+    .empty {
       color: var(--muted);
-      font-size: 14px;
-      line-height: 1.75;
     }
 
     .segment {
       border: 1px solid var(--line);
-      border-radius: 18px;
-      padding: 14px 16px;
+      border-radius: 16px;
+      padding: 14px;
+      background: #fff;
       margin-bottom: 12px;
-      background: var(--card-solid);
       cursor: pointer;
-      transition: 0.18s ease;
+      transition: 0.2s ease;
     }
 
     .segment:hover {
-      transform: translateY(-1px);
       border-color: #c7d2fe;
-      box-shadow: 0 10px 25px rgba(15, 23, 42, 0.06);
+      transform: translateY(-1px);
+      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.05);
     }
 
     .segment.active {
-      border-color: var(--accent);
-      background: color-mix(in srgb, var(--soft) 70%, var(--card-solid));
-      box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.06);
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.08);
+      background: #f8faff;
     }
 
     .segment-head {
@@ -675,109 +368,91 @@
       margin-bottom: 8px;
     }
 
-    .time {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: var(--chip-bg);
-      color: var(--chip-fg);
-      border-radius: 999px;
-      padding: 8px 10px;
+    .segment-time {
       font-size: 12px;
       font-weight: 800;
-    }
-
-    .time svg {
-      width: 14px;
-      height: 14px;
-      flex-shrink: 0;
+      color: var(--primary);
+      background: #eef2ff;
+      border-radius: 999px;
+      padding: 7px 10px;
     }
 
     .segment-index {
       font-size: 12px;
-      color: #94a3b8;
       font-weight: 800;
+      color: var(--muted);
     }
 
     .segment-text {
       font-size: 15px;
+      color: var(--text);
       line-height: 1.8;
-      color: var(--fg);
-    }
-
-    .json-box {
-      margin: 0;
-      background: #0f172a;
-      color: #e2e8f0;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-      font-size: 13px;
-      line-height: 1.75;
       white-space: pre-wrap;
     }
 
-    .history-panel-header {
+    .helper {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    .history-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 10px;
-      padding: 16px 16px 12px;
-      border-bottom: 1px solid var(--line);
+      gap: 12px;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
     }
 
     .history-title {
-      font-size: 16px;
-      font-weight: 800;
       margin: 0;
+      font-size: 18px;
+      font-weight: 800;
     }
 
     .history-list {
-      max-height: 620px;
-      overflow: auto;
-      padding: 14px;
+      display: grid;
+      gap: 12px;
     }
 
     .history-empty {
-      color: var(--muted);
-      font-size: 14px;
-      line-height: 1.7;
       border: 1px dashed var(--line);
       border-radius: 16px;
-      padding: 18px;
+      padding: 16px;
+      color: var(--muted);
+      background: #fff;
       text-align: center;
     }
 
     .history-item {
       border: 1px solid var(--line);
       border-radius: 16px;
-      padding: 12px;
-      margin-bottom: 12px;
-      background: var(--card-solid);
+      background: #fff;
+      padding: 14px;
     }
 
     .history-item-title {
       font-size: 14px;
       font-weight: 800;
       margin-bottom: 6px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      color: var(--text);
     }
 
     .history-item-meta {
       font-size: 12px;
       color: var(--muted);
+      line-height: 1.7;
       margin-bottom: 8px;
-      line-height: 1.6;
     }
 
     .history-item-preview {
       font-size: 13px;
-      color: var(--fg);
       line-height: 1.7;
+      color: var(--text);
       margin-bottom: 10px;
-      display: -webkit-box;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
+      white-space: pre-wrap;
     }
 
     .history-actions {
@@ -786,626 +461,279 @@
       flex-wrap: wrap;
     }
 
-    .footer {
-      text-align: center;
-      margin-top: 18px;
-      color: var(--muted);
-      font-size: 13px;
-      font-weight: 600;
-    }
-
-    @media (max-width: 1100px) {
-      .controls {
-        grid-template-columns: 1fr 1fr;
-      }
-
-      .status-row {
-        grid-template-columns: 1fr 1fr;
-      }
-
-      .main-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    @media (max-width: 700px) {
-      .page {
-        padding: 18px 12px 30px;
-      }
-
-      .workspace {
-        padding: 16px;
-      }
-
-      .controls,
-      .status-row {
+    @media (max-width: 720px) {
+      .grid.two,
+      .grid.three,
+      .meta,
+      .mode-switch {
         grid-template-columns: 1fr;
       }
 
-      .tabs {
-        align-items: stretch;
-      }
-
-      .tab-tools {
-        width: 100%;
-      }
-
-      .tool-btn {
-        width: 100%;
-      }
-
-      .topbar {
+      .actions,
+      .history-actions {
         flex-direction: column;
-        align-items: stretch;
       }
 
-      .home-link,
-      .theme-toggle {
-        text-align: center;
-      }
-
-      .history-actions .history-btn {
-        width: 100%;
-      }
-
-      .recording-controls {
-        width: 100%;
-      }
-
-      .recording-btn {
+      .btn {
         width: 100%;
       }
     }
   </style>
 </head>
 <body>
-  <div class="page">
-    <div class="topbar">
-      <div class="brand">
-        <div class="brand-badge" id="brandBadge"></div>
-        <div>VoiceScribe AI</div>
-      </div>
-
-      <div class="top-actions">
-        <button class="theme-toggle" id="themeToggle" type="button"></button>
-        <a href="/" class="home-link">← Back to Home</a>
-      </div>
-    </div>
-
-    <section class="hero">
-      <div class="hero-badge">AI Speech to Text</div>
-      <h1>Transcribe Smarter</h1>
-      <p class="hero-subtitle">
-        Upload your audio or video, choose a language and model, and generate transcript output directly in the browser.
+  <main class="page">
+    <header class="header">
+      <div class="badge">VoiceScribe AI</div>
+      <h1>Speech to Text</h1>
+      <p class="subtitle">
+        Clean interface for file transcription, recording, history, and instant live speech recognition.
       </p>
+    </header>
+
+    <section class="card">
+      <div class="mode-switch">
+        <button class="mode-btn active" id="fileModeBtn" type="button">File Transcribe</button>
+        <button class="mode-btn" id="recordModeBtn" type="button">Recording</button>
+        <button class="mode-btn" id="liveModeBtn" type="button">Live Speech</button>
+      </div>
+
+      <div class="panel active" id="filePanel">
+        <div class="grid">
+          <label class="file-trigger" for="fileInput">
+            <span class="file-name" id="fileName">Choose audio or video file</span>
+            <span class="file-hint">Browse</span>
+          </label>
+          <input id="fileInput" type="file" accept="audio/*,video/*" />
+        </div>
+
+        <div class="grid two">
+          <select class="field" id="languageSelect">
+            <option value="auto" selected>Auto Detect Language</option>
+            <option value="en">English</option>
+            <option value="bn">Bangla</option>
+            <option value="hi">Hindi</option>
+          </select>
+
+          <select class="field" id="modelSelect">
+            <optgroup label="Moonshine (English only)">
+              <option value="moonshine-tiny">Moonshine Tiny (~32 MB)</option>
+              <option value="moonshine-base">Moonshine Base (~61 MB)</option>
+            </optgroup>
+            <optgroup label="Whisper">
+              <option value="whisper-tiny" selected>Whisper Tiny (~40 MB)</option>
+              <option value="whisper-base">Whisper Base (~76 MB)</option>
+              <option value="whisper-small">Whisper Small (~240 MB)</option>
+            </optgroup>
+            <optgroup label="Distil-Whisper (English only)">
+              <option value="distil-whisper-small">Distil Whisper Small (~185 MB)</option>
+            </optgroup>
+          </select>
+        </div>
+
+        <div class="actions">
+          <button class="btn primary" id="transcribeBtn" type="button" disabled>Transcribe File</button>
+          <button class="btn" id="clearBtn" type="button">Clear</button>
+          <button class="btn" id="copyBtn" type="button">Copy</button>
+          <button class="btn" id="downloadBtn" type="button">Download TXT</button>
+        </div>
+
+        <div class="helper">
+          File mode uses your selected local model through BrowserWhisper.
+        </div>
+      </div>
+
+      <div class="panel" id="recordPanel">
+        <div class="grid two">
+          <select class="field" id="recordLanguageSelect">
+            <option value="auto" selected>Auto Detect Language</option>
+            <option value="en">English</option>
+            <option value="bn">Bangla</option>
+            <option value="hi">Hindi</option>
+          </select>
+
+          <select class="field" id="recordModelSelect">
+            <optgroup label="Moonshine (English only)">
+              <option value="moonshine-tiny">Moonshine Tiny (~32 MB)</option>
+              <option value="moonshine-base">Moonshine Base (~61 MB)</option>
+            </optgroup>
+            <optgroup label="Whisper">
+              <option value="whisper-tiny" selected>Whisper Tiny (~40 MB)</option>
+              <option value="whisper-base">Whisper Base (~76 MB)</option>
+              <option value="whisper-small">Whisper Small (~240 MB)</option>
+            </optgroup>
+            <optgroup label="Distil-Whisper (English only)">
+              <option value="distil-whisper-small">Distil Whisper Small (~185 MB)</option>
+            </optgroup>
+          </select>
+        </div>
+
+        <div class="actions">
+          <button class="btn dark" id="startRecordingBtn" type="button">Start Recording</button>
+          <button class="btn stop" id="stopRecordingBtn" type="button" disabled>Stop Recording</button>
+          <button class="btn primary" id="transcribeRecordingBtn" type="button" disabled>Transcribe Recording</button>
+          <button class="btn" id="clearRecordingBtn" type="button">Clear</button>
+        </div>
+
+        <div class="helper">
+          Record audio, stop, then transcribe the recording using the selected model.
+        </div>
+      </div>
+
+      <div class="panel" id="livePanel">
+        <div class="grid two">
+          <select class="field" id="liveLanguageSelect">
+            <option value="en-US" selected>English (US)</option>
+            <option value="en-GB">English (UK)</option>
+            <option value="bn-BD">Bangla (Bangladesh)</option>
+            <option value="hi-IN">Hindi (India)</option>
+          </select>
+
+          <select class="field" id="liveModelSelect">
+            <optgroup label="Live Model Label">
+              <option value="browser-speech" selected>Browser Speech</option>
+              <option value="whisper-tiny">Whisper Tiny (~40 MB)</option>
+              <option value="whisper-base">Whisper Base (~76 MB)</option>
+              <option value="whisper-small">Whisper Small (~240 MB)</option>
+            </optgroup>
+          </select>
+        </div>
+
+        <div class="actions">
+          <button class="btn live" id="startLiveBtn" type="button">Start Live</button>
+          <button class="btn stop" id="stopLiveBtn" type="button" disabled>Stop Live</button>
+          <button class="btn" id="clearLiveBtn" type="button">Clear</button>
+          <button class="btn" id="copyLiveBtn" type="button">Copy</button>
+        </div>
+
+        <div class="helper">
+          Live mode shows text while you speak. This is the fastest practical option.
+        </div>
+      </div>
+
+      <div class="status" id="statusLog">Ready.</div>
+
+      <div class="meta">
+        <div class="meta-box">
+          <div class="meta-label">Mode</div>
+          <div class="meta-value" id="summaryMode">File Transcribe</div>
+        </div>
+        <div class="meta-box">
+          <div class="meta-label">Language</div>
+          <div class="meta-value" id="summaryLanguage">Auto</div>
+        </div>
+        <div class="meta-box">
+          <div class="meta-label">Model / Engine</div>
+          <div class="meta-value" id="summaryModel">Whisper Tiny (~40 MB)</div>
+        </div>
+        <div class="meta-box">
+          <div class="meta-label">Segments</div>
+          <div class="meta-value" id="summarySegments">0</div>
+        </div>
+      </div>
+
+      <div class="media-wrap" id="mediaWrap"></div>
+
+      <div class="output" id="transcriptOutput">
+        <span class="empty">Your transcript will appear here.</span>
+      </div>
     </section>
 
-    <section class="workspace">
-      <div class="note-box">
-        <span id="noteIcon"></span>
-        <span>Best results with clear speech audio. Music-heavy files and songs may reduce transcription accuracy.</span>
+    <section class="card section-gap">
+      <div class="history-header">
+        <h2 class="history-title">History</h2>
+        <button class="btn" id="clearHistoryBtn" type="button">Clear History</button>
       </div>
-
-      <div class="controls">
-        <label class="file-label" id="fileLabel" for="fileInput">
-          <div class="file-left">
-            <div class="file-icon" id="fileIcon"></div>
-            <div class="file-text">
-              <div class="file-title" id="fileName">Choose file or drop here</div>
-              <div class="file-sub" id="fileSub">Audio or video supported</div>
-            </div>
-          </div>
-          <div class="file-action">Browse</div>
-        </label>
-        <input type="file" id="fileInput" accept="audio/*,video/*" />
-
-        <select id="languageSelect" title="Select language">
-          <option value="auto" selected>Auto Detect Language</option>
-          <option value="en">English</option>
-          <option value="bn">Bangla</option>
-          <option value="hi">Hindi</option>
-        </select>
-
-        <select id="modelSelect" title="Select model">
-          <optgroup label="Moonshine (English only)">
-            <option value="moonshine-tiny">Moonshine Tiny (~32 MB)</option>
-            <option value="moonshine-base">Moonshine Base (~61 MB)</option>
-          </optgroup>
-          <optgroup label="Whisper">
-            <option value="whisper-tiny" selected>Whisper Tiny (~40 MB)</option>
-            <option value="whisper-base">Whisper Base (~76 MB)</option>
-            <option value="whisper-small">Whisper Small (~240 MB)</option>
-          </optgroup>
-          <optgroup label="Distil-Whisper (English only)">
-            <option value="distil-whisper-small">Distil Whisper Small (~185 MB)</option>
-          </optgroup>
-        </select>
-
-        <button class="btn-primary" id="transcribeBtn" disabled>Transcribe</button>
-        <button class="btn-secondary" id="clearBtn" type="button">Clear</button>
-      </div>
-
-      <div class="status-row">
-        <div class="status-box" id="statusLog" role="status" aria-live="polite">
-          Ready — select an audio or video file to begin.
-        </div>
-
-        <div class="mini-card">
-          <div class="mini-label">Language</div>
-          <div class="mini-value" id="summaryLanguage">Auto</div>
-        </div>
-
-        <div class="mini-card">
-          <div class="mini-label">Model</div>
-          <div class="mini-value" id="summaryModel">Whisper Tiny</div>
-        </div>
-
-        <div class="mini-card">
-          <div class="mini-label">Segments</div>
-          <div class="mini-value" id="summarySegments">0</div>
-        </div>
-
-        <div class="mini-card">
-          <div class="mini-label">Duration</div>
-          <div class="mini-value" id="summaryDuration">0:00</div>
-        </div>
-
-        <div class="recording-controls">
-          <button id="startRecordingBtn" class="recording-btn" type="button"></button>
-          <button id="stopRecordingBtn" class="recording-btn" type="button"></button>
-        </div>
-      </div>
-
-      <div class="main-grid">
-        <div>
-          <div class="media-wrap" id="mediaWrap"></div>
-
-          <div class="result-panel">
-            <div class="tabs">
-              <div class="tab-buttons">
-                <button class="tab-btn active" data-tab="transcript" type="button">Transcript</button>
-                <button class="tab-btn" data-tab="json" type="button">Raw JSON</button>
-              </div>
-
-              <div class="tab-tools">
-                <button class="tool-btn" id="copyTranscriptBtn" type="button">Copy Transcript</button>
-                <button class="tool-btn" id="copyJsonBtn" type="button">Copy JSON</button>
-                <button class="tool-btn" id="downloadBtn" type="button">Download TXT</button>
-              </div>
-            </div>
-
-            <div class="tab-panel active" data-panel="transcript">
-              <div class="transcript-box" id="transcriptBox">
-                <div class="empty-state">
-                  <div>
-                    <div class="big" id="readyStateIcon"></div>
-                    <h4>Ready to transcribe</h4>
-                    <p>Select a file and click <strong>Transcribe</strong>.</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="tab-panel" data-panel="json">
-              <pre class="json-box" id="jsonBox">[]</pre>
-            </div>
-          </div>
-        </div>
-
-        <aside class="history-panel">
-          <div class="history-panel-header">
-            <h3 class="history-title">Transcript History</h3>
-            <button class="history-btn" id="clearHistoryBtn" type="button">Clear History</button>
-          </div>
-          <div class="history-list" id="historyList"></div>
-        </aside>
-      </div>
+      <div class="history-list" id="historyList"></div>
     </section>
-
-    <div class="footer">VoiceScribe AI • Browser-Based Speech to Text</div>
-  </div>
-
-  <script>
-    const ICONS = {
-      mic: `
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <rect x="9" y="3" width="6" height="11" rx="3"></rect>
-          <path d="M5 10a7 7 0 0 0 14 0"></path>
-          <path d="M12 17v4"></path>
-          <path d="M8 21h8"></path>
-        </svg>
-      `,
-      folder: `
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z"></path>
-        </svg>
-      `,
-      moon: `
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8z"></path>
-        </svg>
-      `,
-      sun: `
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <circle cx="12" cy="12" r="4"></circle>
-          <path d="M12 2v2"></path>
-          <path d="M12 20v2"></path>
-          <path d="m4.93 4.93 1.41 1.41"></path>
-          <path d="m17.66 17.66 1.41 1.41"></path>
-          <path d="M2 12h2"></path>
-          <path d="M20 12h2"></path>
-          <path d="m6.34 17.66-1.41 1.41"></path>
-          <path d="m19.07 4.93-1.41 1.41"></path>
-        </svg>
-      `,
-      stop: `
-        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-          <rect x="6" y="6" width="12" height="12" rx="2"></rect>
-        </svg>
-      `,
-      clock: `
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <circle cx="12" cy="12" r="9"></circle>
-          <path d="M12 7v5l3 2"></path>
-        </svg>
-      `,
-      file: `
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="M14 2H7a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7z"></path>
-          <path d="M14 2v5h5"></path>
-        </svg>
-      `,
-      alert: `
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="M12 9v4"></path>
-          <path d="M12 17h.01"></path>
-          <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
-        </svg>
-      `,
-      error: `
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <circle cx="12" cy="12" r="9"></circle>
-          <path d="m15 9-6 6"></path>
-          <path d="m9 9 6 6"></path>
-        </svg>
-      `,
-      loader: `
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="M21 12a9 9 0 1 1-9-9"></path>
-        </svg>
-      `,
-      transcript: `
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="M8 6h8"></path>
-          <path d="M8 10h8"></path>
-          <path d="M8 14h5"></path>
-          <path d="M6 3h12a2 2 0 0 1 2 2v14l-4-3H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"></path>
-        </svg>
-      `
-    };
-  </script>
+  </main>
 
   <script type="module">
     import { BrowserWhisper } from "/src/index.ts";
 
     const $ = (id) => document.getElementById(id);
 
+    const fileModeBtn = $("fileModeBtn");
+    const recordModeBtn = $("recordModeBtn");
+    const liveModeBtn = $("liveModeBtn");
+
+    const filePanel = $("filePanel");
+    const recordPanel = $("recordPanel");
+    const livePanel = $("livePanel");
+
     const fileInput = $("fileInput");
-    const fileLabel = $("fileLabel");
     const fileName = $("fileName");
-    const fileSub = $("fileSub");
     const languageSelect = $("languageSelect");
     const modelSelect = $("modelSelect");
     const transcribeBtn = $("transcribeBtn");
     const clearBtn = $("clearBtn");
-    const statusLog = $("statusLog");
-    const themeToggle = $("themeToggle");
+    const copyBtn = $("copyBtn");
+    const downloadBtn = $("downloadBtn");
 
+    const recordLanguageSelect = $("recordLanguageSelect");
+    const recordModelSelect = $("recordModelSelect");
+    const startRecordingBtn = $("startRecordingBtn");
+    const stopRecordingBtn = $("stopRecordingBtn");
+    const transcribeRecordingBtn = $("transcribeRecordingBtn");
+    const clearRecordingBtn = $("clearRecordingBtn");
+
+    const liveLanguageSelect = $("liveLanguageSelect");
+    const liveModelSelect = $("liveModelSelect");
+    const startLiveBtn = $("startLiveBtn");
+    const stopLiveBtn = $("stopLiveBtn");
+    const clearLiveBtn = $("clearLiveBtn");
+    const copyLiveBtn = $("copyLiveBtn");
+
+    const statusLog = $("statusLog");
+    const transcriptOutput = $("transcriptOutput");
+    const mediaWrap = $("mediaWrap");
+
+    const summaryMode = $("summaryMode");
     const summaryLanguage = $("summaryLanguage");
     const summaryModel = $("summaryModel");
     const summarySegments = $("summarySegments");
-    const summaryDuration = $("summaryDuration");
-
-    const mediaWrap = $("mediaWrap");
-    const transcriptBox = $("transcriptBox");
-    const jsonBox = $("jsonBox");
-
-    const copyTranscriptBtn = $("copyTranscriptBtn");
-    const copyJsonBtn = $("copyJsonBtn");
-    const downloadBtn = $("downloadBtn");
 
     const historyList = $("historyList");
     const clearHistoryBtn = $("clearHistoryBtn");
 
-    const startRecordingBtn = $("startRecordingBtn");
-    const stopRecordingBtn = $("stopRecordingBtn");
-
-    const brandBadge = $("brandBadge");
-    const fileIcon = $("fileIcon");
-    const noteIcon = $("noteIcon");
-    const readyStateIcon = $("readyStateIcon");
+    const HISTORY_KEY = "voicescribe_clean_history_v1";
 
     let selectedFile = null;
-    let selectedSource = "upload";
-    let mediaEl = null;
-    let segmentRefs = [];
-    let rawSegments = [];
+    let recordedFile = null;
     let transcriptText = "";
+    let mediaEl = null;
+    let mediaObjectUrl = null;
+    let segmentRefs = [];
+
+    let recognition = null;
+    let liveSupported = false;
+    let liveFinalText = "";
+    let liveInterimText = "";
 
     let mediaRecorder = null;
     let recordingStream = null;
     let recordedChunks = [];
-    let recordingStartTime = 0;
-    let recordingTimer = null;
-    let mediaObjectUrl = null;
 
-    const HISTORY_KEY = "voicescribe_history_v1";
-    const THEME_KEY = "voicescribe_theme_v1";
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 
-    const formatTime = (seconds) => {
+    if (SpeechRecognition) {
+      liveSupported = true;
+      recognition = new SpeechRecognition();
+      recognition.continuous = true;
+      recognition.interimResults = true;
+    }
+
+    function setStatus(text) {
+      statusLog.textContent = text;
+    }
+
+    function formatTime(seconds) {
       if (!isFinite(seconds)) return "0:00";
       const mins = Math.floor(seconds / 60);
       const secs = Math.floor(seconds % 60).toString().padStart(2, "0");
       return `${mins}:${secs}`;
-    };
+    }
 
-    const getModelLabel = () => {
-      return modelSelect.options[modelSelect.selectedIndex]?.text || modelSelect.value;
-    };
-
-    const getLanguageLabel = () => {
-      return languageSelect.options[languageSelect.selectedIndex]?.text || languageSelect.value;
-    };
-
-    const shortenFileName = (name, max = 42) => {
-      if (name.length <= max) return name;
-      const dotIndex = name.lastIndexOf(".");
-      const ext = dotIndex !== -1 ? name.slice(dotIndex) : "";
-      const base = dotIndex !== -1 ? name.slice(0, dotIndex) : name;
-      const visibleBaseLength = Math.max(10, max - ext.length - 3);
-      return `${base.slice(0, visibleBaseLength)}...${ext}`;
-    };
-
-    const setStatus = (text) => {
-      statusLog.textContent = text;
-    };
-
-    const escapeHtml = (value) =>
-      String(value)
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#39;");
-
-    const injectStaticIcons = () => {
-      brandBadge.innerHTML = ICONS.mic;
-      fileIcon.innerHTML = ICONS.folder;
-      noteIcon.innerHTML = ICONS.alert;
-      readyStateIcon.innerHTML = ICONS.file;
-
-      startRecordingBtn.innerHTML = `${ICONS.mic}<span>Start Recording</span>`;
-      stopRecordingBtn.innerHTML = `${ICONS.stop}<span>Stop Recording</span>`;
-    };
-
-    const resetOutput = () => {
-      rawSegments = [];
-      segmentRefs = [];
-      transcriptText = "";
-      transcriptBox.innerHTML = `
-        <div class="empty-state">
-          <div>
-            <div class="big">${ICONS.file}</div>
-            <h4>Ready to transcribe</h4>
-            <p>Select a file and click <strong>Transcribe</strong>.</p>
-          </div>
-        </div>
-      `;
-      jsonBox.textContent = "[]";
-      summarySegments.textContent = "0";
-      summaryDuration.textContent = "0:00";
-    };
-
-    const applyTheme = (theme) => {
-      document.documentElement.setAttribute("data-theme", theme);
-      localStorage.setItem(THEME_KEY, theme);
-      themeToggle.innerHTML =
-        theme === "dark"
-          ? `${ICONS.sun}<span>Light Mode</span>`
-          : `${ICONS.moon}<span>Dark Mode</span>`;
-    };
-
-    const loadTheme = () => {
-      const savedTheme = localStorage.getItem(THEME_KEY) || "light";
-      applyTheme(savedTheme);
-    };
-
-    const getHistory = () => {
-      try {
-        return JSON.parse(localStorage.getItem(HISTORY_KEY) || "[]");
-      } catch {
-        return [];
-      }
-    };
-
-    const saveHistory = (history) => {
-      localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
-    };
-
-    const addHistoryItem = () => {
-      if (!selectedFile || !transcriptText.trim()) return;
-
-      const history = getHistory();
-      history.unshift({
-        id: Date.now(),
-        source: selectedSource,
-        fileName: selectedFile.name,
-        shortFileName: shortenFileName(selectedFile.name, 36),
-        model: getModelLabel(),
-        language: getLanguageLabel(),
-        duration: summaryDuration.textContent,
-        segments: summarySegments.textContent,
-        transcript: transcriptText,
-        preview: transcriptText.slice(0, 180),
-        createdAt: new Date().toLocaleString()
-      });
-
-      saveHistory(history.slice(0, 10));
-      renderHistory();
-    };
-
-    const renderHistory = () => {
-      const history = getHistory();
-
-      if (!history.length) {
-        historyList.innerHTML = `
-          <div class="history-empty">
-            No transcript history yet. Your recent completed transcripts will appear here.
-          </div>
-        `;
-        return;
-      }
-
-      historyList.innerHTML = history
-        .map(
-          (item) => `
-            <div class="history-item">
-              <div class="history-item-title" title="${escapeHtml(item.fileName)}">${escapeHtml(item.shortFileName || item.fileName)}</div>
-              <div class="history-item-meta">
-                ${escapeHtml(item.createdAt)}<br>
-                ${escapeHtml(item.source === "recording" ? "Recording" : "Upload")} • ${escapeHtml(item.language)} • ${escapeHtml(item.model)} • ${escapeHtml(item.duration)} • ${escapeHtml(item.segments)} segments
-              </div>
-              <div class="history-item-preview">${escapeHtml(item.preview)}</div>
-              <div class="history-actions">
-                <button class="history-btn" type="button" data-history-copy="${item.id}">Copy</button>
-                <button class="history-btn" type="button" data-history-load="${item.id}">Load</button>
-                <button class="history-btn" type="button" data-history-delete="${item.id}">Delete</button>
-              </div>
-            </div>
-          `
-        )
-        .join("");
-
-      historyList.querySelectorAll("[data-history-copy]").forEach((btn) => {
-        btn.addEventListener("click", async () => {
-          const item = getHistory().find((h) => String(h.id) === btn.dataset.historyCopy);
-          if (!item) return;
-          try {
-            await navigator.clipboard.writeText(item.transcript);
-            setStatus("History transcript copied to clipboard.");
-          } catch {
-            setStatus("Could not copy history transcript.");
-          }
-        });
-      });
-
-      historyList.querySelectorAll("[data-history-load]").forEach((btn) => {
-        btn.addEventListener("click", () => {
-          const item = getHistory().find((h) => String(h.id) === btn.dataset.historyLoad);
-          if (!item) return;
-
-          transcriptText = item.transcript;
-          transcriptBox.innerHTML = `
-            <div class="segment">
-              <div class="segment-head">
-                <span class="time">${ICONS.transcript}<span>Saved Transcript</span></span>
-                <span class="segment-index">${escapeHtml(item.createdAt)}</span>
-              </div>
-              <div class="segment-text" style="white-space: pre-wrap;">${escapeHtml(item.transcript)}</div>
-            </div>
-          `;
-          jsonBox.textContent = JSON.stringify(
-            [{ text: item.transcript, note: "Loaded from transcript history" }],
-            null,
-            2
-          );
-          summaryLanguage.textContent = item.language;
-          summaryModel.textContent = item.model;
-          summarySegments.textContent = item.segments;
-          summaryDuration.textContent = item.duration;
-          setStatus("Saved transcript loaded from history.");
-        });
-      });
-
-      historyList.querySelectorAll("[data-history-delete]").forEach((btn) => {
-        btn.addEventListener("click", () => {
-          const filtered = getHistory().filter((h) => String(h.id) !== btn.dataset.historyDelete);
-          saveHistory(filtered);
-          renderHistory();
-          setStatus("History item deleted.");
-        });
-      });
-    };
-
-    const getPreferredRecordingMimeType = () => {
-      const candidates = [
-        "audio/webm;codecs=opus",
-        "audio/webm",
-        "audio/ogg;codecs=opus",
-        "audio/mp4"
-      ];
-
-      for (const type of candidates) {
-        if (window.MediaRecorder && MediaRecorder.isTypeSupported(type)) {
-          return type;
-        }
-      }
-
-      return "";
-    };
-
-    const stopRecordingTracks = () => {
-      if (recordingStream) {
-        recordingStream.getTracks().forEach((track) => track.stop());
-        recordingStream = null;
-      }
-    };
-
-    const startRecordingTimer = () => {
-      recordingStartTime = Date.now();
-      summaryDuration.textContent = "0:00";
-
-      recordingTimer = setInterval(() => {
-        const elapsed = (Date.now() - recordingStartTime) / 1000;
-        summaryDuration.textContent = formatTime(elapsed);
-        setStatus(`Recording... ${formatTime(elapsed)}`);
-      }, 250);
-    };
-
-    const stopRecordingTimer = () => {
-      if (recordingTimer) {
-        clearInterval(recordingTimer);
-        recordingTimer = null;
-      }
-    };
-
-    const setRecordingUI = (isRecording) => {
-      startRecordingBtn.style.display = isRecording ? "none" : "inline-flex";
-      stopRecordingBtn.style.display = isRecording ? "inline-flex" : "none";
-
-      fileInput.disabled = isRecording;
-      fileLabel.style.pointerEvents = isRecording ? "none" : "auto";
-      modelSelect.disabled = isRecording;
-      languageSelect.disabled = isRecording;
-      clearBtn.disabled = isRecording;
-      transcribeBtn.disabled = isRecording || !selectedFile;
-    };
-
-    const syncModelLanguageRules = () => {
-      const model = modelSelect.value;
-      const isEnglishOnly =
-        model.startsWith("moonshine") || model.startsWith("distil-whisper");
-
-      if (isEnglishOnly && languageSelect.value === "auto") {
-        languageSelect.value = "en";
-        setStatus("Selected model is English-only. Language set to English.");
-      }
-
-      summaryLanguage.textContent = getLanguageLabel().replace("Auto Detect Language", "Auto");
-      summaryModel.textContent = getModelLabel();
-    };
-
-    const clearMediaPreview = () => {
+    function clearMediaPreview() {
       if (mediaEl) {
         mediaEl.pause();
         mediaEl.removeAttribute("src");
@@ -1420,163 +748,387 @@
 
       mediaWrap.innerHTML = "";
       mediaWrap.classList.remove("visible");
-    };
+      segmentRefs = [];
+    }
 
-    const clearAll = () => {
-      if (mediaRecorder && mediaRecorder.state !== "inactive") {
-        mediaRecorder.stop();
-      }
+    function setTranscript(text) {
+      transcriptText = text;
+      transcriptOutput.innerHTML = "";
+      summarySegments.textContent = "0";
 
-      stopRecordingTimer();
-      stopRecordingTracks();
-      setRecordingUI(false);
-
-      selectedFile = null;
-      selectedSource = "upload";
-      fileInput.value = "";
-      fileName.textContent = "Choose file or drop here";
-      fileName.title = "";
-      fileSub.textContent = "Audio or video supported";
-      fileSub.title = "";
-      fileLabel.classList.remove("has-file");
-      transcribeBtn.disabled = true;
-
-      resetOutput();
-      clearMediaPreview();
-
-      setStatus("Ready — select an audio or video file to begin.");
-      summaryLanguage.textContent = getLanguageLabel().replace("Auto Detect Language", "Auto");
-      summaryModel.textContent = getModelLabel();
-    };
-
-    const updateSelectedFileUI = (file, source = "upload") => {
-      selectedFile = file;
-      selectedSource = source;
-
-      if (!selectedFile) {
-        clearAll();
+      if (!text.trim()) {
+        transcriptOutput.innerHTML = `<span class="empty">Your transcript will appear here.</span>`;
         return;
       }
 
-      fileName.textContent = shortenFileName(selectedFile.name);
-      fileName.title = selectedFile.name;
+      transcriptOutput.textContent = text;
+    }
 
-      const subText = `${selectedFile.type || "Unknown type"} • ${(selectedFile.size / (1024 * 1024)).toFixed(2)} MB`;
-      fileSub.textContent = subText;
-      fileSub.title = subText;
+    function resetOutput() {
+      transcriptText = "";
+      transcriptOutput.innerHTML = `<span class="empty">Your transcript will appear here.</span>`;
+      summarySegments.textContent = "0";
+      segmentRefs = [];
+    }
 
-      fileLabel.classList.add("has-file");
-      transcribeBtn.disabled = false;
-      summaryLanguage.textContent = getLanguageLabel().replace("Auto Detect Language", "Auto");
-      summaryModel.textContent = getModelLabel();
-
-      setStatus(
-        source === "recording"
-          ? "Recording ready — click Transcribe."
-          : "File selected — ready to transcribe."
-      );
-    };
-
-    const setDragState = (isDragOver) => {
-      fileLabel.classList.toggle("dragover", isDragOver);
-      if (!selectedFile && isDragOver) {
-        fileName.textContent = "Drop your file here";
-        fileSub.textContent = "Release to upload and transcribe";
-      } else if (!selectedFile && !isDragOver) {
-        fileName.textContent = "Choose file or drop here";
-        fileSub.textContent = "Audio or video supported";
+    function getHistory() {
+      try {
+        return JSON.parse(localStorage.getItem(HISTORY_KEY) || "[]");
+      } catch {
+        return [];
       }
-    };
+    }
 
-    injectStaticIcons();
-    loadTheme();
-    renderHistory();
-    summaryModel.textContent = getModelLabel();
-    summaryLanguage.textContent = getLanguageLabel().replace("Auto Detect Language", "Auto");
+    function saveHistory(items) {
+      localStorage.setItem(HISTORY_KEY, JSON.stringify(items));
+    }
 
-    themeToggle.addEventListener("click", () => {
-      const nextTheme = document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark";
-      applyTheme(nextTheme);
-    });
+    function addHistoryItem(type, title, language, model, transcript, segments) {
+      if (!transcript.trim()) return;
 
-    modelSelect.addEventListener("change", () => {
-      syncModelLanguageRules();
-    });
+      const items = getHistory();
+      items.unshift({
+        id: Date.now(),
+        type,
+        title,
+        language,
+        model,
+        transcript,
+        segments,
+        createdAt: new Date().toLocaleString(),
+        preview: transcript.slice(0, 180)
+      });
+      saveHistory(items.slice(0, 12));
+      renderHistory();
+    }
 
-    languageSelect.addEventListener("change", () => {
-      summaryLanguage.textContent = getLanguageLabel().replace("Auto Detect Language", "Auto");
-    });
+    function renderHistory() {
+      const items = getHistory();
+
+      if (!items.length) {
+        historyList.innerHTML = `<div class="history-empty">No history yet.</div>`;
+        return;
+      }
+
+      historyList.innerHTML = items.map((item) => `
+        <div class="history-item">
+          <div class="history-item-title">${escapeHtml(item.title)}</div>
+          <div class="history-item-meta">
+            ${escapeHtml(item.createdAt)}<br>
+            ${escapeHtml(item.type)} • ${escapeHtml(item.language)} • ${escapeHtml(item.model)} • ${escapeHtml(String(item.segments))} segment(s)
+          </div>
+          <div class="history-item-preview">${escapeHtml(item.preview)}</div>
+          <div class="history-actions">
+            <button class="btn" type="button" data-load="${item.id}">Load</button>
+            <button class="btn" type="button" data-copy="${item.id}">Copy</button>
+            <button class="btn" type="button" data-delete="${item.id}">Delete</button>
+          </div>
+        </div>
+      `).join("");
+
+      historyList.querySelectorAll("[data-load]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const item = getHistory().find((h) => String(h.id) === btn.dataset.load);
+          if (!item) return;
+          clearMediaPreview();
+          transcriptOutput.innerHTML = "";
+          transcriptText = item.transcript;
+          summaryMode.textContent = item.type;
+          summaryLanguage.textContent = item.language;
+          summaryModel.textContent = item.model;
+          summarySegments.textContent = String(item.segments || 0);
+          transcriptOutput.textContent = item.transcript;
+          setStatus("History item loaded.");
+        });
+      });
+
+      historyList.querySelectorAll("[data-copy]").forEach((btn) => {
+        btn.addEventListener("click", async () => {
+          const item = getHistory().find((h) => String(h.id) === btn.dataset.copy);
+          if (!item) return;
+          try {
+            await navigator.clipboard.writeText(item.transcript);
+            setStatus("History transcript copied.");
+          } catch {
+            setStatus("Could not copy history transcript.");
+          }
+        });
+      });
+
+      historyList.querySelectorAll("[data-delete]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const filtered = getHistory().filter((h) => String(h.id) !== btn.dataset.delete);
+          saveHistory(filtered);
+          renderHistory();
+          setStatus("History item deleted.");
+        });
+      });
+    }
+
+    function escapeHtml(value) {
+      return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#39;");
+    }
+
+    function updateSummaryForFile() {
+      summaryMode.textContent = "File Transcribe";
+      summaryLanguage.textContent =
+        languageSelect.options[languageSelect.selectedIndex]?.text?.replace("Auto Detect Language", "Auto") || "Auto";
+      summaryModel.textContent = modelSelect.options[modelSelect.selectedIndex]?.text || modelSelect.value;
+    }
+
+    function updateSummaryForRecording() {
+      summaryMode.textContent = "Recording";
+      summaryLanguage.textContent =
+        recordLanguageSelect.options[recordLanguageSelect.selectedIndex]?.text?.replace("Auto Detect Language", "Auto") || "Auto";
+      summaryModel.textContent = recordModelSelect.options[recordModelSelect.selectedIndex]?.text || recordModelSelect.value;
+    }
+
+    function updateSummaryForLive() {
+      summaryMode.textContent = "Live Speech";
+      summaryLanguage.textContent = liveLanguageSelect.options[liveLanguageSelect.selectedIndex]?.text || liveLanguageSelect.value;
+      summaryModel.textContent = liveModelSelect.options[liveModelSelect.selectedIndex]?.text || liveModelSelect.value;
+    }
+
+    function activatePanel(which) {
+      [fileModeBtn, recordModeBtn, liveModeBtn].forEach((b) => b.classList.remove("active"));
+      [filePanel, recordPanel, livePanel].forEach((p) => p.classList.remove("active"));
+
+      if (which === "file") {
+        fileModeBtn.classList.add("active");
+        filePanel.classList.add("active");
+        updateSummaryForFile();
+        setStatus("File transcription mode selected.");
+      } else if (which === "record") {
+        recordModeBtn.classList.add("active");
+        recordPanel.classList.add("active");
+        updateSummaryForRecording();
+        setStatus("Recording mode selected.");
+      } else {
+        liveModeBtn.classList.add("active");
+        livePanel.classList.add("active");
+        updateSummaryForLive();
+        setStatus(liveSupported ? "Live speech mode selected." : "Live speech is not supported in this browser.");
+      }
+    }
+
+    function renderSegment(start, end, text, index) {
+      const seg = document.createElement("div");
+      seg.className = "segment";
+      seg.innerHTML = `
+        <div class="segment-head">
+          <span class="segment-time">${formatTime(start)} - ${formatTime(end)}</span>
+          <span class="segment-index">Segment ${index}</span>
+        </div>
+        <div class="segment-text"></div>
+      `;
+      seg.querySelector(".segment-text").textContent = text;
+
+      seg.addEventListener("click", () => {
+        if (!mediaEl) return;
+        mediaEl.currentTime = start || 0;
+        mediaEl.play?.();
+      });
+
+      transcriptOutput.appendChild(seg);
+      segmentRefs.push({ start, end, el: seg });
+      summarySegments.textContent = String(index);
+    }
+
+    function attachMediaPreview(file) {
+      clearMediaPreview();
+      mediaObjectUrl = URL.createObjectURL(file);
+      mediaEl = document.createElement(file.type.startsWith("video/") ? "video" : "audio");
+      mediaEl.controls = true;
+      mediaEl.src = mediaObjectUrl;
+      mediaWrap.appendChild(mediaEl);
+      mediaWrap.classList.add("visible");
+
+      mediaEl.addEventListener("timeupdate", () => {
+        const current = mediaEl.currentTime || 0;
+        segmentRefs.forEach((seg) => {
+          seg.el.classList.toggle("active", current >= seg.start && current <= seg.end + 0.35);
+        });
+      });
+    }
+
+    async function transcribeAnyFile(file, modelValue, languageValue, titleForHistory, typeForHistory) {
+      resetOutput();
+      clearMediaPreview();
+      attachMediaPreview(file);
+      setStatus("Preparing local model...");
+
+      try {
+        const whisperConfig = { model: modelValue };
+        if (languageValue !== "auto") {
+          whisperConfig.language = languageValue;
+        }
+
+        const whisper = new BrowserWhisper(whisperConfig);
+
+        let index = 0;
+        let fullText = "";
+
+        const stream = whisper.transcribe(file, {
+          onProgress({ stage, progress }) {
+            const pct = Math.round((progress || 0) * 100);
+
+            if (stage === "loading") {
+              setStatus(progress === 1 ? "Model ready. Starting..." : `Downloading model... ${pct}%`);
+            } else if (stage === "decoding") {
+              setStatus(`Decoding audio... ${pct}%`);
+            } else if (stage === "transcribing") {
+              setStatus("Transcribing locally...");
+            } else {
+              setStatus(stage);
+            }
+          }
+        });
+
+        transcriptOutput.innerHTML = "";
+
+        for await (const { text, start = 0, end = 0 } of stream) {
+          const clean = (text || "").trim();
+          if (!clean) continue;
+
+          index += 1;
+          fullText += (fullText ? "\n" : "") + clean;
+          renderSegment(start, end, clean, index);
+        }
+
+        transcriptText = fullText;
+
+        if (!transcriptText.trim()) {
+          setTranscript("");
+          setStatus("No speech detected.");
+        } else {
+          addHistoryItem(
+            typeForHistory,
+            titleForHistory,
+            languageValue === "auto" ? "Auto" : languageValue,
+            modelValue,
+            transcriptText,
+            index
+          );
+          setStatus(`Transcription complete. ${index} segment(s) found.`);
+        }
+      } catch (err) {
+        console.error(err);
+        setStatus(`Error: ${err?.message || "Transcription failed."}`);
+        setTranscript("");
+      }
+    }
+
+    function getPreferredRecordingMimeType() {
+      const candidates = [
+        "audio/webm;codecs=opus",
+        "audio/webm",
+        "audio/ogg;codecs=opus",
+        "audio/mp4"
+      ];
+
+      for (const type of candidates) {
+        if (window.MediaRecorder && MediaRecorder.isTypeSupported(type)) {
+          return type;
+        }
+      }
+
+      return "";
+    }
+
+    function stopRecordingTracks() {
+      if (recordingStream) {
+        recordingStream.getTracks().forEach((track) => track.stop());
+        recordingStream = null;
+      }
+    }
+
+    fileModeBtn.addEventListener("click", () => activatePanel("file"));
+    recordModeBtn.addEventListener("click", () => activatePanel("record"));
+    liveModeBtn.addEventListener("click", () => activatePanel("live"));
 
     fileInput.addEventListener("change", () => {
-      const file = fileInput.files?.[0] || null;
-      updateSelectedFileUI(file, "upload");
+      selectedFile = fileInput.files?.[0] || null;
+      fileName.textContent = selectedFile ? selectedFile.name : "Choose audio or video file";
+      transcribeBtn.disabled = !selectedFile;
+      clearMediaPreview();
+      resetOutput();
+      setStatus(selectedFile ? "File selected." : "No file selected.");
     });
 
-    ["dragenter", "dragover"].forEach((eventName) => {
-      fileLabel.addEventListener(eventName, (event) => {
-        event.preventDefault();
-        event.stopPropagation();
-        if (fileInput.disabled) return;
-        setDragState(true);
-      });
+    languageSelect.addEventListener("change", updateSummaryForFile);
+    modelSelect.addEventListener("change", updateSummaryForFile);
+    recordLanguageSelect.addEventListener("change", updateSummaryForRecording);
+    recordModelSelect.addEventListener("change", updateSummaryForRecording);
+    liveLanguageSelect.addEventListener("change", updateSummaryForLive);
+    liveModelSelect.addEventListener("change", updateSummaryForLive);
+
+    transcribeBtn.addEventListener("click", async () => {
+      if (!selectedFile) return;
+      updateSummaryForFile();
+      await transcribeAnyFile(
+        selectedFile,
+        modelSelect.value,
+        languageSelect.value,
+        selectedFile.name,
+        "File Transcribe"
+      );
     });
 
-    ["dragleave", "dragend"].forEach((eventName) => {
-      fileLabel.addEventListener(eventName, (event) => {
-        event.preventDefault();
-        event.stopPropagation();
-        setDragState(false);
-      });
+    clearBtn.addEventListener("click", () => {
+      selectedFile = null;
+      fileInput.value = "";
+      fileName.textContent = "Choose audio or video file";
+      transcribeBtn.disabled = true;
+      clearMediaPreview();
+      resetOutput();
+      setStatus("Cleared.");
     });
 
-    fileLabel.addEventListener("drop", (event) => {
-      event.preventDefault();
-      event.stopPropagation();
-      setDragState(false);
-
-      if (fileInput.disabled) return;
-
-      const file = event.dataTransfer?.files?.[0] || null;
-      if (!file) return;
-
-      const dt = new DataTransfer();
-      dt.items.add(file);
-      fileInput.files = dt.files;
-      updateSelectedFileUI(file, "upload");
+    copyBtn.addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(transcriptText || "");
+        setStatus(transcriptText ? "Transcript copied." : "Nothing to copy.");
+      } catch {
+        setStatus("Could not copy transcript.");
+      }
     });
 
-    document.querySelectorAll(".tab-btn").forEach((btn) => {
-      btn.addEventListener("click", () => {
-        document.querySelectorAll(".tab-btn").forEach((item) => item.classList.remove("active"));
-        document.querySelectorAll(".tab-panel").forEach((panel) => panel.classList.remove("active"));
+    downloadBtn.addEventListener("click", () => {
+      if (!transcriptText.trim()) {
+        setStatus("Nothing to download.");
+        return;
+      }
 
-        btn.classList.add("active");
-        const panel = document.querySelector(`[data-panel="${btn.dataset.tab}"]`);
-        if (panel) panel.classList.add("active");
-      });
+      const blob = new Blob([transcriptText], { type: "text/plain;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      const baseName = selectedFile?.name || recordedFile?.name || "transcript";
+      a.download = `${baseName.replace(/\.[^/.]+$/, "")}-transcript.txt`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+      setStatus("Transcript downloaded.");
     });
 
     startRecordingBtn.addEventListener("click", async () => {
       try {
         if (!navigator.mediaDevices?.getUserMedia) {
-          throw new Error("Audio recording is not supported in this browser.");
+          throw new Error("Recording is not supported in this browser.");
         }
 
+        updateSummaryForRecording();
         resetOutput();
         clearMediaPreview();
+        recordedFile = null;
+        transcribeRecordingBtn.disabled = true;
         setStatus("Requesting microphone access...");
-
-        const model = modelSelect.value;
-        const isEnglishOnly =
-          model.startsWith("moonshine") || model.startsWith("distil-whisper");
-
-        if (isEnglishOnly && languageSelect.value === "auto") {
-          languageSelect.value = "en";
-          summaryLanguage.textContent = "English";
-        } else {
-          languageSelect.value = "auto";
-          summaryLanguage.textContent = "Auto";
-        }
 
         recordingStream = await navigator.mediaDevices.getUserMedia({
           audio: {
@@ -1600,19 +1152,18 @@
         });
 
         mediaRecorder.addEventListener("start", () => {
-          setRecordingUI(true);
-          startRecordingTimer();
+          startRecordingBtn.disabled = true;
+          stopRecordingBtn.disabled = false;
           setStatus("Recording started...");
         });
 
         mediaRecorder.addEventListener("stop", () => {
-          stopRecordingTimer();
           stopRecordingTracks();
-          setRecordingUI(false);
+          startRecordingBtn.disabled = false;
+          stopRecordingBtn.disabled = true;
 
           if (!recordedChunks.length) {
             setStatus("No audio was recorded.");
-            summaryDuration.textContent = "0:00";
             return;
           }
 
@@ -1624,219 +1175,153 @@
             : "webm";
 
           const blob = new Blob(recordedChunks, { type: finalMimeType });
-          const recordedFile = new File(
+          recordedFile = new File(
             [blob],
             `recording-${new Date().toISOString().replace(/[:.]/g, "-")}.${extension}`,
             { type: finalMimeType }
           );
 
-          const dt = new DataTransfer();
-          dt.items.add(recordedFile);
-          fileInput.files = dt.files;
-
-          updateSelectedFileUI(recordedFile, "recording");
-          setStatus("Recording complete. Ready to transcribe.");
+          attachMediaPreview(recordedFile);
+          transcribeRecordingBtn.disabled = false;
+          setStatus("Recording complete. Click Transcribe Recording.");
         });
 
-        mediaRecorder.start(250);
+        mediaRecorder.start();
       } catch (err) {
-        stopRecordingTimer();
+        console.error(err);
         stopRecordingTracks();
-        setRecordingUI(false);
-        setStatus(`Recording error: ${err?.message || "Unable to start recording."}`);
+        startRecordingBtn.disabled = false;
+        stopRecordingBtn.disabled = true;
+        setStatus(`Recording error: ${err?.message || "Could not start recording."}`);
       }
     });
 
     stopRecordingBtn.addEventListener("click", () => {
       if (mediaRecorder && mediaRecorder.state !== "inactive") {
-        setStatus("Stopping recording...");
         mediaRecorder.stop();
       }
     });
 
-    transcribeBtn.addEventListener("click", async () => {
-      if (!selectedFile) return;
+    transcribeRecordingBtn.addEventListener("click", async () => {
+      if (!recordedFile) return;
+      updateSummaryForRecording();
+      await transcribeAnyFile(
+        recordedFile,
+        recordModelSelect.value,
+        recordLanguageSelect.value,
+        recordedFile.name,
+        "Recording"
+      );
+    });
 
-      transcribeBtn.disabled = true;
-      resetOutput();
-
-      if (mediaEl) mediaEl.pause();
+    clearRecordingBtn.addEventListener("click", () => {
+      if (mediaRecorder && mediaRecorder.state !== "inactive") {
+        mediaRecorder.stop();
+      }
+      stopRecordingTracks();
+      recordedFile = null;
+      recordedChunks = [];
+      transcribeRecordingBtn.disabled = true;
+      startRecordingBtn.disabled = false;
+      stopRecordingBtn.disabled = true;
       clearMediaPreview();
+      resetOutput();
+      setStatus("Recording cleared.");
+    });
 
-      mediaObjectUrl = URL.createObjectURL(selectedFile);
-      mediaEl = document.createElement(selectedFile.type.startsWith("video/") ? "video" : "audio");
-      mediaEl.controls = true;
-      mediaEl.src = mediaObjectUrl;
-      mediaWrap.appendChild(mediaEl);
-      mediaWrap.classList.add("visible");
+    if (recognition) {
+      recognition.onstart = () => {
+        startLiveBtn.disabled = true;
+        stopLiveBtn.disabled = false;
+        setStatus("Listening... speak now.");
+      };
 
-      mediaEl.addEventListener("loadedmetadata", () => {
-        summaryDuration.textContent = formatTime(mediaEl.duration || 0);
-      });
-
-      mediaEl.addEventListener("timeupdate", () => {
-        const current = mediaEl.currentTime || 0;
-        segmentRefs.forEach((seg) => {
-          seg.el.classList.toggle("active", current >= seg.start && current <= seg.end + 0.35);
-        });
-      });
-
-      transcriptBox.innerHTML = `
-        <div class="empty-state">
-          <div>
-            <div class="big">${ICONS.loader}</div>
-            <h4>Processing...</h4>
-            <p>Please wait while the model transcribes your file.</p>
-          </div>
-        </div>
-      `;
-
-      try {
-        const whisperConfig = { model: modelSelect.value };
-        if (languageSelect.value !== "auto") {
-          whisperConfig.language = languageSelect.value;
-        }
-
-        const whisper = new BrowserWhisper(whisperConfig);
-
-        const stream = whisper.transcribe(selectedFile, {
-          onProgress({ stage, progress }) {
-            const pct = Math.round((progress || 0) * 100);
-
-            if (stage === "loading") {
-              setStatus(progress === 1 ? "Model ready. Starting..." : `Downloading model... ${pct}%`);
-            } else if (stage === "decoding") {
-              setStatus(`Decoding audio... ${pct}%`);
-            } else if (stage === "transcribing") {
-              setStatus("Transcribing speech to text...");
-            } else {
-              setStatus(stage);
-            }
+      recognition.onresult = (event) => {
+        let interim = "";
+        for (let i = event.resultIndex; i < event.results.length; i++) {
+          const text = event.results[i][0].transcript || "";
+          if (event.results[i].isFinal) {
+            liveFinalText += text + " ";
+          } else {
+            interim += text;
           }
-        });
+        }
+        liveInterimText = interim;
+        setTranscript((liveFinalText + liveInterimText).trim());
+      };
 
-        let index = 0;
-        let firstSegment = true;
+      recognition.onerror = (event) => {
+        setStatus(`Live speech error: ${event.error}`);
+      };
 
-        for await (const { text, start, end } of stream) {
-          const cleanText = (text || "").trim();
-          if (!cleanText) continue;
+      recognition.onend = () => {
+        startLiveBtn.disabled = false;
+        stopLiveBtn.disabled = true;
+        liveInterimText = "";
+        setTranscript((liveFinalText + liveInterimText).trim());
 
-          index += 1;
-
-          if (firstSegment) {
-            transcriptBox.innerHTML = "";
-            firstSegment = false;
-          }
-
-          rawSegments.push({ index, text: cleanText, start, end });
-          transcriptText += (transcriptText ? "\n" : "") + cleanText;
-
-          const seg = document.createElement("div");
-          seg.className = "segment";
-          seg.innerHTML = `
-            <div class="segment-head">
-              <span class="time">${ICONS.clock}<span>${formatTime(start)} - ${formatTime(end)}</span></span>
-              <span class="segment-index">Segment ${index}</span>
-            </div>
-            <div class="segment-text"></div>
-          `;
-          seg.querySelector(".segment-text").textContent = cleanText;
-
-          seg.addEventListener("click", () => {
-            if (!mediaEl) return;
-            mediaEl.currentTime = start;
-            mediaEl.play();
-          });
-
-          transcriptBox.appendChild(seg);
-          transcriptBox.scrollTop = transcriptBox.scrollHeight;
-
-          segmentRefs.push({ start, end, el: seg });
-          summarySegments.textContent = String(index);
-          jsonBox.textContent = JSON.stringify(rawSegments, null, 2);
+        if (transcriptText.trim()) {
+          addHistoryItem(
+            "Live Speech",
+            "Live speech session",
+            liveLanguageSelect.value,
+            liveModelSelect.value,
+            transcriptText,
+            1
+          );
         }
 
-        if (rawSegments.length === 0) {
-          transcriptBox.innerHTML = `
-            <div class="empty-state">
-              <div>
-                <div class="big">${ICONS.alert}</div>
-                <h4>No speech detected</h4>
-                <p>No transcript segments were produced.</p>
-              </div>
-            </div>
-          `;
-        } else {
-          addHistoryItem();
-        }
+        setStatus("Live speech stopped.");
+      };
+    }
 
-        setStatus(`Done — ${rawSegments.length} segment(s) transcribed.`);
-      } catch (err) {
-        console.error(err);
-        setStatus(`Error: ${err?.message || "Something went wrong."}`);
+    startLiveBtn.addEventListener("click", () => {
+      if (!recognition) {
+        setStatus("Live speech is not supported in this browser.");
+        return;
+      }
 
-        transcriptBox.innerHTML = `
-          <div class="empty-state">
-            <div>
-              <div class="big">${ICONS.error}</div>
-              <h4>Transcription failed</h4>
-              <p>${err?.message || "An unknown error occurred."}</p>
-            </div>
-          </div>
-        `;
-      } finally {
-        transcribeBtn.disabled = false;
+      updateSummaryForLive();
+      clearMediaPreview();
+      liveFinalText = transcriptText.trim() ? transcriptText + " " : "";
+      liveInterimText = "";
+      summarySegments.textContent = "1";
+      recognition.lang = liveLanguageSelect.value;
+      recognition.start();
+    });
+
+    stopLiveBtn.addEventListener("click", () => {
+      if (recognition) {
+        recognition.stop();
       }
     });
 
-    clearBtn.addEventListener("click", () => {
-      clearAll();
+    clearLiveBtn.addEventListener("click", () => {
+      liveFinalText = "";
+      liveInterimText = "";
+      clearMediaPreview();
+      setTranscript("");
+      summarySegments.textContent = "0";
+      setStatus("Live transcript cleared.");
     });
 
-    clearHistoryBtn.addEventListener("click", () => {
-      saveHistory([]);
-      renderHistory();
-      setStatus("Transcript history cleared.");
-    });
-
-    copyTranscriptBtn.addEventListener("click", async () => {
+    copyLiveBtn.addEventListener("click", async () => {
       try {
         await navigator.clipboard.writeText(transcriptText || "");
-        setStatus(transcriptText ? "Transcript copied to clipboard." : "No transcript available.");
+        setStatus(transcriptText ? "Transcript copied." : "Nothing to copy.");
       } catch {
         setStatus("Could not copy transcript.");
       }
     });
 
-    copyJsonBtn.addEventListener("click", async () => {
-      try {
-        await navigator.clipboard.writeText(jsonBox.textContent || "[]");
-        setStatus("Raw JSON copied to clipboard.");
-      } catch {
-        setStatus("Could not copy JSON.");
-      }
+    clearHistoryBtn.addEventListener("click", () => {
+      saveHistory([]);
+      renderHistory();
+      setStatus("History cleared.");
     });
 
-    downloadBtn.addEventListener("click", () => {
-      if (!transcriptText.trim()) {
-        setStatus("No transcript available to download.");
-        return;
-      }
-
-      const blob = new Blob([transcriptText], { type: "text/plain;charset=utf-8" });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      const baseName = selectedFile?.name ? selectedFile.name.replace(/\.[^/.]+$/, "") : "transcript";
-      a.href = url;
-      a.download = `${baseName}-transcript.txt`;
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      URL.revokeObjectURL(url);
-
-      setStatus("Transcript downloaded successfully.");
-    });
+    renderHistory();
+    activatePanel("file");
   </script>
 </body>
 </html>
