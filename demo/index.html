@@ -154,14 +154,16 @@
 
     .field,
     .btn,
-    .file-trigger {
+    .file-trigger,
+    .reply-box {
       min-height: 54px;
       border-radius: 14px;
       border: 1px solid var(--line);
       font: inherit;
     }
 
-    .field {
+    .field,
+    .reply-box {
       width: 100%;
       background: #fff;
       padding: 0 14px;
@@ -169,7 +171,14 @@
       outline: none;
     }
 
-    .field:focus {
+    .reply-box {
+      min-height: 110px;
+      padding: 14px;
+      resize: vertical;
+    }
+
+    .field:focus,
+    .reply-box:focus {
       border-color: var(--primary);
       box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.08);
     }
@@ -252,6 +261,28 @@
       background: var(--dark);
       color: #fff;
       border-color: transparent;
+    }
+
+    .speak-icon-btn {
+      width: 34px;
+      height: 34px;
+      min-height: 34px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: #fff;
+      cursor: pointer;
+      font-size: 14px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: 0.2s ease;
+      padding: 0;
+    }
+
+    .speak-icon-btn:hover {
+      transform: translateY(-1px);
+      border-color: var(--primary);
+      box-shadow: 0 6px 16px rgba(15, 23, 42, 0.08);
     }
 
     .status {
@@ -344,7 +375,6 @@
       padding: 14px;
       background: #fff;
       margin-bottom: 12px;
-      cursor: pointer;
       transition: 0.2s ease;
     }
 
@@ -580,21 +610,12 @@
       </div>
 
       <div class="panel" id="livePanel">
-        <div class="grid two">
+        <div class="grid">
           <select class="field" id="liveLanguageSelect">
             <option value="en-US" selected>English (US)</option>
             <option value="en-GB">English (UK)</option>
             <option value="bn-BD">Bangla (Bangladesh)</option>
             <option value="hi-IN">Hindi (India)</option>
-          </select>
-
-          <select class="field" id="liveModelSelect">
-            <optgroup label="Live Model Label">
-              <option value="browser-speech" selected>Browser Speech</option>
-              <option value="whisper-tiny">Whisper Tiny (~40 MB)</option>
-              <option value="whisper-base">Whisper Base (~76 MB)</option>
-              <option value="whisper-small">Whisper Small (~240 MB)</option>
-            </optgroup>
           </select>
         </div>
 
@@ -605,8 +626,21 @@
           <button class="btn" id="copyLiveBtn" type="button">Copy</button>
         </div>
 
+        <div class="grid">
+          <textarea
+            class="reply-box"
+            id="liveReplyInput"
+            placeholder="Type your reply here, then click Speak Reply..."
+          ></textarea>
+        </div>
+
+        <div class="actions">
+          <button class="btn primary" id="speakReplyBtn" type="button">Speak Reply</button>
+          <button class="btn" id="clearReplyBtn" type="button">Clear Reply</button>
+        </div>
+
         <div class="helper">
-          Live mode shows text while you speak. This is the fastest practical option.
+          First, listen and transcribe the speaker using the microphone. Then type your reply and let the app read it aloud with a soft voice.
         </div>
       </div>
 
@@ -677,11 +711,13 @@
     const clearRecordingBtn = $("clearRecordingBtn");
 
     const liveLanguageSelect = $("liveLanguageSelect");
-    const liveModelSelect = $("liveModelSelect");
     const startLiveBtn = $("startLiveBtn");
     const stopLiveBtn = $("stopLiveBtn");
     const clearLiveBtn = $("clearLiveBtn");
     const copyLiveBtn = $("copyLiveBtn");
+    const liveReplyInput = $("liveReplyInput");
+    const speakReplyBtn = $("speakReplyBtn");
+    const clearReplyBtn = $("clearReplyBtn");
 
     const statusLog = $("statusLog");
     const transcriptOutput = $("transcriptOutput");
@@ -695,7 +731,7 @@
     const historyList = $("historyList");
     const clearHistoryBtn = $("clearHistoryBtn");
 
-    const HISTORY_KEY = "voicescribe_clean_history_v1";
+    const HISTORY_KEY = "voicescribe_clean_history_v6";
 
     let selectedFile = null;
     let recordedFile = null;
@@ -708,6 +744,10 @@
     let liveSupported = false;
     let liveFinalText = "";
     let liveInterimText = "";
+    let liveConversation = [];
+    let speakingNow = false;
+    let liveSessionActive = false;
+    let liveProcessing = false;
 
     let mediaRecorder = null;
     let recordingStream = null;
@@ -718,8 +758,9 @@
     if (SpeechRecognition) {
       liveSupported = true;
       recognition = new SpeechRecognition();
-      recognition.continuous = true;
+      recognition.continuous = false;
       recognition.interimResults = true;
+      recognition.maxAlternatives = 1;
     }
 
     function setStatus(text) {
@@ -731,6 +772,72 @@
       const mins = Math.floor(seconds / 60);
       const secs = Math.floor(seconds % 60).toString().padStart(2, "0");
       return `${mins}:${secs}`;
+    }
+
+    function chooseSoftVoice(langCode) {
+      if (!("speechSynthesis" in window)) return null;
+
+      const voices = window.speechSynthesis.getVoices() || [];
+      if (!voices.length) return null;
+
+      const preferredNames = [
+        "Google US English",
+        "Google UK English Female",
+        "Microsoft Zira",
+        "Samantha",
+        "Victoria",
+        "Karen"
+      ];
+
+      for (const name of preferredNames) {
+        const found = voices.find((v) => v.name && v.name.includes(name));
+        if (found) return found;
+      }
+
+      const exact = voices.find((v) => v.lang === langCode);
+      if (exact) return exact;
+
+      const base = langCode.split("-")[0].toLowerCase();
+      const partial = voices.find((v) => v.lang && v.lang.toLowerCase().startsWith(base));
+      return partial || voices[0] || null;
+    }
+
+    function speakText(text) {
+      return new Promise((resolve) => {
+        if (!("speechSynthesis" in window) || !text.trim()) {
+          resolve();
+          return;
+        }
+
+        window.speechSynthesis.cancel();
+
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = liveLanguageSelect.value || "en-US";
+
+        const voice = chooseSoftVoice(utterance.lang);
+        if (voice) utterance.voice = voice;
+
+        utterance.rate = 0.9;
+        utterance.pitch = 0.9;
+        utterance.volume = 0.9;
+
+        utterance.onstart = () => {
+          speakingNow = true;
+          setStatus(`Speaking: ${text}`);
+        };
+
+        utterance.onend = () => {
+          speakingNow = false;
+          resolve();
+        };
+
+        utterance.onerror = () => {
+          speakingNow = false;
+          resolve();
+        };
+
+        window.speechSynthesis.speak(utterance);
+      });
     }
 
     function clearMediaPreview() {
@@ -788,7 +895,7 @@
 
       const items = getHistory();
       items.unshift({
-        id: Date.now(),
+        id: Date.now() + Math.random(),
         type,
         title,
         language,
@@ -798,7 +905,7 @@
         createdAt: new Date().toLocaleString(),
         preview: transcript.slice(0, 180)
       });
-      saveHistory(items.slice(0, 12));
+      saveHistory(items.slice(0, 15));
       renderHistory();
     }
 
@@ -890,8 +997,9 @@
 
     function updateSummaryForLive() {
       summaryMode.textContent = "Live Speech";
-      summaryLanguage.textContent = liveLanguageSelect.options[liveLanguageSelect.selectedIndex]?.text || liveLanguageSelect.value;
-      summaryModel.textContent = liveModelSelect.options[liveModelSelect.selectedIndex]?.text || liveModelSelect.value;
+      summaryLanguage.textContent =
+        liveLanguageSelect.options[liveLanguageSelect.selectedIndex]?.text || liveLanguageSelect.value;
+      summaryModel.textContent = "Browser Speech + TTS";
     }
 
     function activatePanel(which) {
@@ -912,7 +1020,7 @@
         liveModeBtn.classList.add("active");
         livePanel.classList.add("active");
         updateSummaryForLive();
-        setStatus(liveSupported ? "Live speech mode selected." : "Live speech is not supported in this browser.");
+        setStatus(liveSupported ? "Live speech reply mode selected." : "Live speech is not supported in this browser.");
       }
     }
 
@@ -954,6 +1062,64 @@
           seg.el.classList.toggle("active", current >= seg.start && current <= seg.end + 0.35);
         });
       });
+    }
+
+    function renderLiveConversation() {
+      transcriptOutput.innerHTML = "";
+
+      if (!liveConversation.length) {
+        transcriptOutput.innerHTML = `<span class="empty">Your live messages will appear here.</span>`;
+        transcriptText = "";
+        summarySegments.textContent = "0";
+        return;
+      }
+
+      liveConversation.forEach((item, index) => {
+        const seg = document.createElement("div");
+        seg.className = "segment";
+
+        const canSpeak = item.role === "Speaker" || item.role === "Reply";
+
+        seg.innerHTML = `
+          <div class="segment-head">
+            <span class="segment-time">${escapeHtml(item.role)}</span>
+            <div style="display:flex;align-items:center;gap:8px;">
+              ${
+                canSpeak
+                  ? `<button
+                      type="button"
+                      class="speak-icon-btn"
+                      data-speak-text="${escapeHtml(item.text)}"
+                      title="Read aloud"
+                      aria-label="Read aloud"
+                    >🔊</button>`
+                  : ""
+              }
+              <span class="segment-index">Message ${index + 1}</span>
+            </div>
+          </div>
+          <div class="segment-text"></div>
+        `;
+
+        seg.querySelector(".segment-text").textContent = item.text;
+        transcriptOutput.appendChild(seg);
+      });
+
+      transcriptOutput.querySelectorAll(".speak-icon-btn").forEach((btn) => {
+        btn.addEventListener("click", async () => {
+          const text = btn.dataset.speakText || "";
+          if (!text.trim()) return;
+          await speakText(text);
+        });
+      });
+
+      transcriptText = liveConversation.map((item) => `${item.role}: ${item.text}`).join("\n");
+      summarySegments.textContent = String(liveConversation.length);
+    }
+
+    function addLiveMessage(role, text) {
+      liveConversation.push({ role, text: text.trim() });
+      renderLiveConversation();
     }
 
     async function transcribeAnyFile(file, modelValue, languageValue, titleForHistory, typeForHistory) {
@@ -1065,7 +1231,6 @@
     recordLanguageSelect.addEventListener("change", updateSummaryForRecording);
     recordModelSelect.addEventListener("change", updateSummaryForRecording);
     liveLanguageSelect.addEventListener("change", updateSummaryForLive);
-    liveModelSelect.addEventListener("change", updateSummaryForLive);
 
     transcribeBtn.addEventListener("click", async () => {
       if (!selectedFile) return;
@@ -1238,40 +1403,76 @@
 
       recognition.onresult = (event) => {
         let interim = "";
+        let finalText = "";
+
         for (let i = event.resultIndex; i < event.results.length; i++) {
           const text = event.results[i][0].transcript || "";
           if (event.results[i].isFinal) {
-            liveFinalText += text + " ";
+            finalText += text + " ";
           } else {
             interim += text;
           }
         }
-        liveInterimText = interim;
-        setTranscript((liveFinalText + liveInterimText).trim());
+
+        liveInterimText = interim.trim();
+
+        if (finalText.trim()) {
+          liveFinalText = `${liveFinalText} ${finalText}`.trim();
+        }
+
+        if (liveInterimText) {
+          setStatus(`Listening: ${liveInterimText}`);
+        }
       };
 
       recognition.onerror = (event) => {
         setStatus(`Live speech error: ${event.error}`);
-      };
-
-      recognition.onend = () => {
         startLiveBtn.disabled = false;
         stopLiveBtn.disabled = true;
+        liveSessionActive = false;
+      };
+
+      recognition.onend = async () => {
+        if (!liveSessionActive) {
+          startLiveBtn.disabled = false;
+          stopLiveBtn.disabled = true;
+          return;
+        }
+
+        if (liveProcessing || speakingNow) return;
+
+        const finalMessage = liveFinalText.trim();
+        liveFinalText = "";
         liveInterimText = "";
-        setTranscript((liveFinalText + liveInterimText).trim());
+
+        if (!finalMessage) {
+          setStatus("No speech detected.");
+          startLiveBtn.disabled = false;
+          stopLiveBtn.disabled = true;
+          liveSessionActive = false;
+          return;
+        }
+
+        liveProcessing = true;
+        addLiveMessage("Speaker", finalMessage);
+
+        liveProcessing = false;
+        startLiveBtn.disabled = false;
+        stopLiveBtn.disabled = true;
+        liveSessionActive = false;
 
         if (transcriptText.trim()) {
           addHistoryItem(
             "Live Speech",
-            "Live speech session",
+            "Live transcript",
             liveLanguageSelect.value,
-            liveModelSelect.value,
+            "Browser Speech + TTS",
             transcriptText,
-            1
+            liveConversation.length
           );
         }
 
-        setStatus("Live speech stopped.");
+        setStatus("Live speech transcribed. Click the speaker icon to read it aloud, or type a reply.");
       };
     }
 
@@ -1283,35 +1484,103 @@
 
       updateSummaryForLive();
       clearMediaPreview();
-      liveFinalText = transcriptText.trim() ? transcriptText + " " : "";
+      liveFinalText = "";
       liveInterimText = "";
-      summarySegments.textContent = "1";
-      recognition.lang = liveLanguageSelect.value;
-      recognition.start();
-    });
+      liveSessionActive = true;
+      liveProcessing = false;
 
-    stopLiveBtn.addEventListener("click", () => {
-      if (recognition) {
-        recognition.stop();
+      recognition.lang = liveLanguageSelect.value;
+
+      try {
+        recognition.start();
+      } catch (err) {
+        console.error(err);
+        setStatus("Could not start live listening.");
+        liveSessionActive = false;
       }
     });
 
-    clearLiveBtn.addEventListener("click", () => {
+    stopLiveBtn.addEventListener("click", () => {
+      liveSessionActive = false;
       liveFinalText = "";
       liveInterimText = "";
+
+      if (recognition) {
+        try {
+          recognition.stop();
+        } catch {}
+      }
+
+      if ("speechSynthesis" in window) {
+        window.speechSynthesis.cancel();
+      }
+
+      startLiveBtn.disabled = false;
+      stopLiveBtn.disabled = true;
+      setStatus("Live listening stopped.");
+    });
+
+    clearLiveBtn.addEventListener("click", () => {
+      liveSessionActive = false;
+      liveFinalText = "";
+      liveInterimText = "";
+      liveConversation = [];
+      liveReplyInput.value = "";
       clearMediaPreview();
-      setTranscript("");
+      renderLiveConversation();
       summarySegments.textContent = "0";
-      setStatus("Live transcript cleared.");
+
+      if (recognition) {
+        try {
+          recognition.stop();
+        } catch {}
+      }
+
+      if ("speechSynthesis" in window) {
+        window.speechSynthesis.cancel();
+      }
+
+      startLiveBtn.disabled = false;
+      stopLiveBtn.disabled = true;
+      setStatus("Live section cleared.");
     });
 
     copyLiveBtn.addEventListener("click", async () => {
       try {
         await navigator.clipboard.writeText(transcriptText || "");
-        setStatus(transcriptText ? "Transcript copied." : "Nothing to copy.");
+        setStatus(transcriptText ? "Conversation copied." : "Nothing to copy.");
       } catch {
-        setStatus("Could not copy transcript.");
+        setStatus("Could not copy conversation.");
       }
+    });
+
+    speakReplyBtn.addEventListener("click", async () => {
+      const reply = liveReplyInput.value.trim();
+      if (!reply) {
+        setStatus("Type a reply first.");
+        return;
+      }
+
+      updateSummaryForLive();
+      addLiveMessage("Reply", reply);
+
+      await speakText(reply);
+
+      addHistoryItem(
+        "Live Reply",
+        "Typed reply",
+        liveLanguageSelect.value,
+        "Browser Speech + TTS",
+        transcriptText,
+        liveConversation.length
+      );
+
+      setStatus("Reply spoken aloud.");
+    });
+
+    clearReplyBtn.addEventListener("click", () => {
+      liveReplyInput.value = "";
+      setStatus("Reply text cleared.");
     });
 
     clearHistoryBtn.addEventListener("click", () => {
@@ -1319,6 +1588,10 @@
       renderHistory();
       setStatus("History cleared.");
     });
+
+    if ("speechSynthesis" in window) {
+      window.speechSynthesis.onvoiceschanged = () => {};
+    }
 
     renderHistory();
     activatePanel("file");
