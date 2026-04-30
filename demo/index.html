@@ -491,6 +491,245 @@
       flex-wrap: wrap;
     }
 
+
+
+    .support-fab {
+      position: fixed;
+      right: 22px;
+      bottom: 22px;
+      width: 64px;
+      height: 64px;
+      border: none;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #2563eb, #4f46e5);
+      color: #fff;
+      box-shadow: 0 18px 35px rgba(37, 99, 235, 0.28);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 1200;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .support-fab:hover {
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 0 22px 40px rgba(37, 99, 235, 0.34);
+    }
+
+    .support-fab-icon {
+      font-size: 26px;
+      line-height: 1;
+    }
+
+    .support-panel {
+      position: fixed;
+      right: 22px;
+      bottom: 98px;
+      width: min(380px, calc(100vw - 28px));
+      background: #ffffff;
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      box-shadow: 0 30px 70px rgba(15, 23, 42, 0.18);
+      overflow: hidden;
+      z-index: 1200;
+      display: none;
+    }
+
+    .support-panel.open {
+      display: block;
+    }
+
+    .support-header {
+      padding: 16px 18px;
+      background: linear-gradient(135deg, #eff6ff, #eef2ff);
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .support-title-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .support-title {
+      margin: 0;
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--text);
+    }
+
+    .support-subtitle {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .support-close {
+      width: 38px;
+      height: 38px;
+      border: 1px solid var(--line);
+      background: #fff;
+      border-radius: 999px;
+      cursor: pointer;
+      font-size: 18px;
+      color: var(--text);
+    }
+
+    .support-body {
+      padding: 16px;
+      display: grid;
+      gap: 12px;
+      background: #fcfcff;
+    }
+
+    .support-status {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: #fff;
+      color: var(--muted);
+      padding: 12px 14px;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .support-messages {
+      max-height: 270px;
+      overflow: auto;
+      display: grid;
+      gap: 10px;
+      padding-right: 2px;
+    }
+
+    .support-empty {
+      border: 1px dashed var(--line);
+      border-radius: 16px;
+      background: #fff;
+      color: var(--muted);
+      padding: 14px;
+      font-size: 13px;
+      line-height: 1.7;
+      text-align: center;
+    }
+
+    .support-bubble {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 12px 13px;
+    }
+
+    .support-bubble.user {
+      background: #f8fafc;
+    }
+
+    .support-bubble.bot {
+      background: #eef2ff;
+      border-color: #dbe4ff;
+    }
+
+    .support-bubble-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+
+    .support-role {
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--primary);
+    }
+
+    .support-bubble-text {
+      font-size: 14px;
+      line-height: 1.7;
+      color: var(--text);
+      white-space: pre-wrap;
+    }
+
+    .support-chip-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .support-chip {
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--text);
+      padding: 9px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .support-input {
+      width: 100%;
+      min-height: 86px;
+      resize: vertical;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 12px 14px;
+      font: inherit;
+      color: var(--text);
+      background: #fff;
+      outline: none;
+    }
+
+    .support-input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.08);
+    }
+
+    .support-actions {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+
+    .support-btn {
+      min-height: 46px;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: #fff;
+      font: inherit;
+      font-weight: 800;
+      cursor: pointer;
+      color: var(--text);
+    }
+
+    .support-btn.primary {
+      background: linear-gradient(135deg, var(--primary), var(--primary-2));
+      color: #fff;
+      border-color: transparent;
+    }
+
+    @media (max-width: 720px) {
+      .support-panel {
+        right: 14px;
+        bottom: 86px;
+        width: calc(100vw - 28px);
+      }
+
+      .support-fab {
+        right: 14px;
+        bottom: 14px;
+      }
+
+      .support-actions {
+        grid-template-columns: 1fr;
+      }
+    }
+
     @media (max-width: 720px) {
       .grid.two,
       .grid.three,
@@ -1593,8 +1832,293 @@
       window.speechSynthesis.onvoiceschanged = () => {};
     }
 
+
+
+    const supportFab = $("supportFab");
+    const supportPanel = $("supportPanel");
+    const supportClose = $("supportClose");
+    const supportStatus = $("supportStatus");
+    const supportMessages = $("supportMessages");
+    const supportInput = $("supportInput");
+    const supportMicBtn = $("supportMicBtn");
+    const supportSendBtn = $("supportSendBtn");
+    const supportClearBtn = $("supportClearBtn");
+    const supportChips = Array.from(document.querySelectorAll(".support-chip"));
+
+    let supportRecognition = null;
+    let supportListening = false;
+    let supportMessagesData = [];
+
+    const supportFaq = [
+      {
+        keywords: ["register", "signup", "sign up", "open account", "create account"],
+        answer: "To register, please open the registration page, enter your name, mobile number, and password, then submit the form."
+      },
+      {
+        keywords: ["password", "reset password", "forgot password"],
+        answer: "To reset your password, open the forgot password option, enter your registered mobile or email, and follow the verification steps."
+      },
+      {
+        keywords: ["helpline", "hotline", "support number", "phone number"],
+        answer: "You can contact the helpline through the customer support number provided on the service page during working hours."
+      },
+      {
+        keywords: ["customer support", "agent", "representative", "talk to support"],
+        answer: "If customer support is unavailable, you can leave your question here and use the predefined assistant for common help topics."
+      },
+      {
+        keywords: ["service", "what do you do", "help", "available services"],
+        answer: "This assistant helps with common service questions using speech to text and text to speech so communication becomes easier for users."
+      },
+      {
+        keywords: ["language", "bangla", "english", "hindi"],
+        answer: "You can choose a supported language from the interface before using the live or support features."
+      },
+      {
+        keywords: ["account blocked", "blocked", "locked"],
+        answer: "If your account is blocked, please contact support and verify your identity using your registered information."
+      },
+      {
+        keywords: ["thank", "thanks"],
+        answer: "You are welcome. Let me know if you need anything else."
+      }
+    ];
+
+    function setSupportStatus(text) {
+      supportStatus.textContent = text;
+    }
+
+    function openSupportPanel() {
+      supportPanel.classList.add("open");
+      supportInput.focus();
+    }
+
+    function closeSupportPanel() {
+      supportPanel.classList.remove("open");
+      if (supportRecognition && supportListening) {
+        try { supportRecognition.stop(); } catch {}
+      }
+      supportListening = false;
+      supportMicBtn.textContent = "🎤 Ask";
+    }
+
+    function getSupportAnswer(question) {
+      const normalized = question.toLowerCase().trim();
+      if (!normalized) return "Please ask a question so I can help you.";
+
+      for (const item of supportFaq) {
+        if (item.keywords.some((keyword) => normalized.includes(keyword))) {
+          return item.answer;
+        }
+      }
+
+      return "I could not find an exact answer. Please contact customer support for detailed assistance.";
+    }
+
+    function renderSupportMessages() {
+      supportMessages.innerHTML = "";
+
+      if (!supportMessagesData.length) {
+        supportMessages.innerHTML = `<div class="support-empty">No support messages yet. Use the mic, type a question, or choose one of the quick options above.</div>`;
+        return;
+      }
+
+      supportMessagesData.forEach((item) => {
+        const bubble = document.createElement("div");
+        bubble.className = `support-bubble ${item.role === "You" ? "user" : "bot"}`;
+        bubble.innerHTML = `
+          <div class="support-bubble-head">
+            <span class="support-role">${escapeHtml(item.role)}</span>
+            ${item.role === "Assistant" ? `<button type="button" class="speak-icon-btn" data-support-speak="${escapeHtml(item.text)}" title="Read reply aloud">🔊</button>` : ""}
+          </div>
+          <div class="support-bubble-text"></div>
+        `;
+        bubble.querySelector(".support-bubble-text").textContent = item.text;
+        supportMessages.appendChild(bubble);
+      });
+
+      supportMessages.querySelectorAll("[data-support-speak]").forEach((btn) => {
+        btn.addEventListener("click", async () => {
+          const text = btn.dataset.supportSpeak || "";
+          if (!text.trim()) return;
+          await speakText(text);
+        });
+      });
+
+      supportMessages.scrollTop = supportMessages.scrollHeight;
+    }
+
+    function addSupportMessage(role, text) {
+      supportMessagesData.push({ role, text: text.trim() });
+      renderSupportMessages();
+    }
+
+    async function handleSupportQuestion(question) {
+      const clean = question.trim();
+      if (!clean) {
+        setSupportStatus("Please enter or speak a question first.");
+        return;
+      }
+
+      addSupportMessage("You", clean);
+      const answer = getSupportAnswer(clean);
+      addSupportMessage("Assistant", answer);
+      setSupportStatus("Support reply ready. Click the speaker icon to hear it, or ask another question.");
+      await speakText(answer);
+    }
+
+    if (SpeechRecognition) {
+      supportRecognition = new SpeechRecognition();
+      supportRecognition.continuous = false;
+      supportRecognition.interimResults = true;
+      supportRecognition.maxAlternatives = 1;
+
+      supportRecognition.onstart = () => {
+        supportListening = true;
+        supportMicBtn.textContent = "Listening...";
+        setSupportStatus("Support assistant is listening. Please speak your question.");
+      };
+
+      supportRecognition.onresult = async (event) => {
+        let interimText = "";
+        let finalText = "";
+
+        for (let i = event.resultIndex; i < event.results.length; i++) {
+          const spokenPart = event.results[i][0]?.transcript || "";
+          if (event.results[i].isFinal) {
+            finalText += spokenPart + " ";
+          } else {
+            interimText += spokenPart;
+          }
+        }
+
+        const liveText = `${finalText} ${interimText}`.trim();
+        if (liveText) {
+          supportInput.value = liveText;
+          setSupportStatus(`Listening: ${liveText}`);
+        }
+
+        if (finalText.trim()) {
+          const finalQuestion = finalText.trim();
+          supportInput.value = finalQuestion;
+          await handleSupportQuestion(finalQuestion);
+          supportInput.value = "";
+        }
+      };
+
+      supportRecognition.onerror = (event) => {
+        setSupportStatus(`Support mic error: ${event.error}`);
+      };
+
+      supportRecognition.onend = () => {
+        supportListening = false;
+        supportMicBtn.textContent = "Ask";
+      };
+    }
+
+    supportFab.addEventListener("click", () => {
+      if (supportPanel.classList.contains("open")) {
+        closeSupportPanel();
+      } else {
+        openSupportPanel();
+      }
+    });
+
+    supportClose.addEventListener("click", closeSupportPanel);
+
+    supportSendBtn.addEventListener("click", async () => {
+      const value = supportInput.value.trim();
+      await handleSupportQuestion(value);
+      supportInput.value = "";
+    });
+
+    supportInput.addEventListener("keydown", async (event) => {
+      if ((event.ctrlKey || event.metaKey) && event.key === "Enter") {
+        event.preventDefault();
+        const value = supportInput.value.trim();
+        await handleSupportQuestion(value);
+        supportInput.value = "";
+      }
+    });
+
+    supportMicBtn.addEventListener("click", () => {
+      if (!supportRecognition) {
+        setSupportStatus("Speech recognition is not supported in this browser.");
+        return;
+      }
+
+      supportRecognition.lang = liveLanguageSelect.value || "en-US";
+
+      if (supportListening) {
+        try { supportRecognition.stop(); } catch {}
+        return;
+      }
+
+      try {
+        supportRecognition.start();
+      } catch {
+        setSupportStatus("Could not start support microphone.");
+      }
+    });
+
+    supportClearBtn.addEventListener("click", () => {
+      supportMessagesData = [];
+      supportInput.value = "";
+      renderSupportMessages();
+      setSupportStatus("Support assistant cleared.");
+    });
+
+    supportChips.forEach((chip) => {
+      chip.addEventListener("click", async () => {
+        const question = chip.dataset.question || "";
+        supportInput.value = question;
+        await handleSupportQuestion(question);
+        supportInput.value = "";
+      });
+    });
+
+    renderSupportMessages();
     renderHistory();
     activatePanel("file");
   </script>
+
+
+  <button class="support-fab" id="supportFab" type="button" aria-label="Open support assistant" title="Open support assistant">
+    <span class="support-fab-icon">💬</span>
+  </button>
+
+  <section class="support-panel" id="supportPanel" aria-label="Support Assistant">
+    <div class="support-header">
+      <div class="support-title-wrap">
+        <h3 class="support-title">Support Assistant</h3>
+        <div class="support-subtitle">Predefined voice and text help for common customer questions.</div>
+      </div>
+      <button class="support-close" id="supportClose" type="button" aria-label="Close support assistant">×</button>
+    </div>
+
+    <div class="support-body">
+      <div class="support-status" id="supportStatus">Ask by voice or type a question. The assistant replies with predefined support answers.</div>
+
+      <div class="support-chip-row">
+        <button class="support-chip" type="button" data-question="How can I register?">How can I register?</button>
+        <button class="support-chip" type="button" data-question="How can I reset my password?">Reset password</button>
+        <button class="support-chip" type="button" data-question="What is the helpline number?">Helpline</button>
+        <button class="support-chip" type="button" data-question="How do I talk to customer support?">Customer support</button>
+      </div>
+
+      <div class="support-messages" id="supportMessages">
+        <div class="support-empty">No support messages yet. Use the mic, type a question, or choose one of the quick options above.</div>
+      </div>
+
+      <textarea class="support-input" id="supportInput" placeholder="Type a support question here..."></textarea>
+
+      <div class="support-actions">
+        <button class="support-btn" id="supportMicBtn" type="button">Ask</button>
+        <button class="support-btn primary" id="supportSendBtn" type="button">Send</button>
+        <button class="support-btn" id="supportClearBtn" type="button">Clear</button>
+      </div>
+    </div>
+  </section>
+
 </body>
 </html>
